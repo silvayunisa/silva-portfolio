@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Silva Yunisa — Portfolio</title>
+  <meta name="description" content="Personal biography and portfolio of Silva Yunisa, a Computer Science student exploring UI/UX, data analytics, web development and creative design.">
+
+  <!-- Applies a saved/system dark-mode preference before the page paints,
+       so returning dark-mode visitors don't see a flash of the light theme.
+       (The toggle button itself is created later by js/script.js.) -->
+  <script>
+    (function () {
+      try {
+        var savedTheme = localStorage.getItem('theme');
+        var systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      } catch (e) {
+        /* localStorage unavailable (e.g. private browsing) — defaults to light mode */
+      }
+    })();
+  </script>
+
+  <!-- Google Fonts: Inter (used for both headings and body text) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=block" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <a href="#main" class="skip-link">Skip to content</a>
+
+  <!-- =========================================================
+       NAVIGATION
+       Rename/reorder links here if you rename or reorder sections.
+  ========================================================== -->
+  <header class="navbar">
+    <div class="nav-inner">
+      <!-- EDIT YOUR NAME HERE (short version / initials used as the logo) -->
+      <a href="#home" class="nav-logo">Silva Yunisa</a>
+
+      <div class="nav-right">
+        <input type="checkbox" id="nav-toggle" class="nav-toggle">
+        <label for="nav-toggle" class="nav-burger" aria-label="Toggle navigation menu">
+          <span></span><span></span><span></span>
+        </label>
+
+        <nav class="nav-menu" aria-label="Primary">
+          <a href="#home" class="nav-link">Home</a>
+          <a href="#about" class="nav-link">About</a>
+          <a href="#projects" class="nav-link">Projects</a>
+          <a href="#skills" class="nav-link">Skills</a>
+          <a href="#contact" class="nav-link">Contact</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- =========================================================
+         HERO
+    ========================================================== -->
+    <section id="home" class="hero">
+      <div class="hero-text">
+        <!-- EDIT YOUR NAME HERE -->
+        <h1 class="hero-name">SILVA YUNISA NASUTION</h1>
+
+        <!-- EDIT YOUR ROLE / SHORT TITLE HERE — script.js types these out one
+             at a time. Add, remove, or reorder <span> items freely. -->
+        <p class="hero-role">
+          <span id="hero-role-text" class="hero-role-text" data-roles="Computer Science Student, UI/UX Design Enthusiast, Data Analytics Enthusiast, Aspiring Web Developer">Computer Science Student</span>
+        </p>
+
+        <!-- EDIT YOUR SHORT INTRODUCTION HERE -->
+        <p class="hero-intro">Currently exploring data analytics, UI/UX design, and web technologies while building practical digital projects as a Computer Science student at BINUS University.</p>
+
+        <a href="#projects" class="btn">View My Work</a>
+      </div>
+
+      <a href="#about" class="hero-scroll-cue" aria-label="Scroll to About section">
+        <span></span>
+      </a>
+    </section>
+
+    <!-- =========================================================
+         ABOUT
+    ========================================================== -->
+    <section id="about" class="about">
+      <div class="section-inner">
+        <h2 class="section-title">About</h2>
+
+        <div class="about-grid">
+          <img src="silva-profile.jpg" alt="Silva Yunisa Nasution" class="about-image">
+
+          <div class="about-text">
+            <!-- EDIT YOUR ABOUT TEXT HERE -->
+            <p>I&rsquo;m a Computer Science student at BINUS University with an interest in technology, design, and data. I enjoy exploring how technology can be used to create useful and engaging digital experiences.</p>
+            <p>Currently, I&rsquo;m learning and building projects in data analytics, UI/UX design, and web development, while continuing to explore new ways to combine creativity with technology.</p>
+
+            <!-- These interest tags are optional — add, remove, or rename them freely -->
+            <ul class="tag-list">
+              <li class="tag">UI/UX</li>
+              <li class="tag">Data Analytics</li>
+              <li class="tag">Web Development</li>
+              <li class="tag">Creative Design</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         PROJECTS
+         Duplicate the whole .project-card block to add another project.
+    ========================================================== -->
+    <section id="projects" class="projects">
+      <div class="section-inner">
+        <h2 class="section-title">Project &amp; Resume</h2>
+
+        <!-- ADD YOUR PROJECT HERE -->
+        <div class="projects-grid">
+
+          <article class="project-card">
+            <p class="project-category">Data Analytics</p>
+            <h3 class="project-name">Customer Behavior &amp; Marketing Analytics</h3>
+            <p class="project-desc">Analyzing 20,000 electronics retail transactions to explore customer behavior, product performance, sales patterns, and order cancellations using data analysis, statistical methods, and machine learning.</p>
+            <ul class="project-tags">
+              <li class="tag">Python</li>
+              <li class="tag">Pandas</li>
+              <li class="tag">Statistical Analysis</li>
+              <li class="tag">Machine Learning</li>
+            </ul>
+            <!-- Put the PDF sejajar dengan index.html (folder utama proyek) -->
+            <a href="Data_Analytics_Project.pdf" class="project-link" target="_blank" rel="noopener">View Project PDF</a>
+          </article>
+
+          <article class="project-card">
+            <p class="project-category">Software Engineering</p>
+            <h3 class="project-name">StudyBuddy</h3>
+            <p class="project-desc">A web-based platform designed to help students find compatible study partners based on their courses, schedules, and learning goals. StudyBuddy helps students connect, form study groups, manage schedules, and communicate with other students.</p>
+            <!-- Team-project disclosure — keep this visible; do not present this as solo work -->
+            <p class="project-meta">This was a Software Engineering team project. My part covered UI/UX design in Figma, the presentation, and project documentation.</p>
+            <ul class="project-tags">
+              <li class="tag">HTML</li>
+              <li class="tag">CSS</li>
+              <li class="tag">JavaScript</li>
+              <li class="tag">Node.js</li>
+              <li class="tag">MySQL</li>
+            </ul>
+            <a href="https://github.com/silvayunisa/studybuddy-software-engineering" class="project-link" target="_blank" rel="noopener">View on GitHub</a>
+          </article>
+
+          <article class="project-card">
+            <p class="project-category">UI/UX Design &middot; Human-Computer Interaction</p>
+            <h3 class="project-name">Ship Deck</h3>
+            <p class="project-desc">A Semester 2 Human-Computer Interaction lab project where I was assigned to design and develop a website based on a ship deck theme. I created the interface and turned the design into a functional web experience.</p>
+            <p class="project-meta">Human-Computer Interaction Lab Project</p>
+            <ul class="project-tags">
+              <li class="tag">Figma</li>
+              <li class="tag">HTML</li>
+              <li class="tag">CSS</li>
+              <li class="tag">JavaScript</li>
+              <li class="tag">Vercel</li>
+            </ul>
+            <div class="project-links">
+              <a href="https://ship-deckk-silva.vercel.app" class="project-link" target="_blank" rel="noopener">View Live Website</a>
+              <a href="https://www.figma.com/design/VSkzQX7PcVqYZijY5WyXyC/ShipDeckK?node-id=0-1&t=yx1T8kuCjYB8Q0Pj-1" class="project-link" target="_blank" rel="noopener">View Figma Design</a>
+            </div>
+          </article>
+
+          <!-- ↓ Full-width row: Data Visualization sits on its own line below the 3 cards above ↓ -->
+          <article class="project-card project-card--full">
+            <p class="project-category">Data Visualization</p>
+            <img src="hr-attrition-dashboard.png" alt="HR Employee Attrition Dashboard — Tableau dashboard screenshot" class="project-image">
+            <h3 class="project-name">HR Employee Attrition Dashboard</h3>
+            <p class="project-desc">An interactive Tableau dashboard designed to explore employee attrition patterns across departments, job roles, education levels, and time.</p>
+            <!-- Team-project disclosure — keep this visible; do not present this as solo work -->
+            <p class="project-meta"><strong>Data Visualization Team Project</strong></p>
+            <ul class="project-tags">
+              <li class="tag">Tableau</li>
+              <li class="tag">Data Visualization</li>
+              <li class="tag">Dashboard Design</li>
+            </ul>
+            <ul class="project-highlights">
+              <li>100,000 employee records</li>
+              <li>10.01% overall attrition</li>
+              <li>Attrition analysis by department</li>
+              <li>Attrition analysis by job title</li>
+              <li>Education-level composition</li>
+              <li>Monthly headcount and attrition trend</li>
+              <li>Interactive department and job title filters</li>
+            </ul>
+            <a href="https://public.tableau.com/views/HR_EmployeeAttritionDashboard_17905151270160/MainDashboard" class="project-link" target="_blank" rel="noopener">View Dashboard</a>
+          </article>
+          <!-- ↑ Copy a .project-card block above to add another project ↑ -->
+
+          <!-- ↓ Full-width row: Resume sits on its own line, below Data Visualization ↓ -->
+          <!-- Resume / CV card — point the link at your CV file or the
+               Drive/Dropbox folder that holds it -->
+          <article class="project-card project-card--full">
+            <p class="project-category">Resume</p>
+            <h3 class="project-name">My CV / Resume</h3>
+            <p class="project-desc">Computer Science student at BINUS University with hands-on experience across UI/UX design, data analytics, and web development, plus a track record of technical, creative, and community-focused roles.</p>
+            <a href="Silva_Yunisa_CV.pdf" class="project-link" target="_blank" rel="noopener">View / Download</a>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         SKILLS & TOOLS
+         Two flat tag lists — Skills and Tools & Technologies.
+         Add or remove <li class="skill-tag"> items in either list freely.
+    ========================================================== -->
+    <section id="skills" class="skills">
+      <div class="section-inner">
+        <h2 class="section-title">Skills &amp; Tools</h2>
+
+        <div class="skills-groups">
+          <div class="skills-group">
+            <h3 class="skills-group-title">Skills</h3>
+            <ul class="skills-list">
+              <li><a href="https://en.wikipedia.org/wiki/User_experience_design" class="skill-tag" target="_blank" rel="noopener">UI/UX Design</a></li>
+              <li><a href="https://en.wikipedia.org/wiki/Data_analysis" class="skill-tag" target="_blank" rel="noopener">Data Analysis</a></li>
+              <li><a href="https://en.wikipedia.org/wiki/Data_and_information_visualization" class="skill-tag" target="_blank" rel="noopener">Data Visualization</a></li>
+              <li><a href="https://en.wikipedia.org/wiki/Web_development" class="skill-tag" target="_blank" rel="noopener">Web Development</a></li>
+              <li><a href="https://en.wikipedia.org/wiki/C_(programming_language)" class="skill-tag" target="_blank" rel="noopener">C Programming</a></li>
+            </ul>
+          </div>
+
+          <div class="skills-group">
+            <h3 class="skills-group-title">Tools &amp; Technologies</h3>
+            <ul class="skills-list">
+              <li><a href="https://www.figma.com" class="skill-tag" target="_blank" rel="noopener">Figma</a></li>
+              <li><a href="https://www.python.org" class="skill-tag" target="_blank" rel="noopener">Python</a></li>
+              <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML" class="skill-tag" target="_blank" rel="noopener">HTML</a></li>
+              <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS" class="skill-tag" target="_blank" rel="noopener">CSS</a></li>
+              <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" class="skill-tag" target="_blank" rel="noopener">JavaScript</a></li>
+              <li><a href="https://www.tableau.com" class="skill-tag" target="_blank" rel="noopener">Tableau</a></li>
+              <li><a href="https://powerbi.microsoft.com" class="skill-tag" target="_blank" rel="noopener">Power BI</a></li>
+              <li><a href="https://github.com" class="skill-tag" target="_blank" rel="noopener">Git / GitHub</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- =========================================================
+       CONTACT
+  ========================================================== -->
+  <footer id="contact" class="contact">
+    <div class="section-inner">
+      <h2 class="section-title section-title-light">Contact</h2>
+
+      <!-- EDIT YOUR CONTACT INFORMATION HERE -->
+      <div class="contact-list">
+        <a href="mailto:silvasatuenamlima@gmail.com" class="contact-row">
+          <span class="contact-label">Email</span>
+          <span class="contact-value">silvasatuenamlima@gmail.com</span>
+        </a>
+        <a href="https://www.linkedin.com/in/silva165" class="contact-row" target="_blank" rel="noopener">
+          <span class="contact-label">LinkedIn</span>
+          <span class="contact-value">linkedin.com/in/silva165</span>
+        </a>
+        <a href="https://github.com/silvayunisa" class="contact-row" target="_blank" rel="noopener">
+          <span class="contact-label">GitHub</span>
+          <span class="contact-value">github.com/silvayunisa</span>
+        </a>
+      </div>
+
+      <p class="footer-note">© [2026] Silva Yunisa</p>
+    </div>
+  </footer>
+
+  <script src="js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,906 @@
+/* =========================================================
+   CSS VARIABLES — change these to restyle the whole site
+========================================================= */
+:root {
+  /* COLORS — edit these to change the whole palette */
+  --cream: #FFFFFF;
+  --paper: #F5FAFE;
+  --yellow: #AEE1F5;
+  --red: #1F6FA8;
+  --dark: #17394D;
+  --white: #FFFFFF;
+
+  /* TYPOGRAPHY */
+  --font-display: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  --fs-hero: clamp(2.75rem, 7vw, 5.5rem);
+  --fs-h2: clamp(2.25rem, 5vw, 3.75rem);
+  --fs-h3: 1.35rem;
+  --fs-lead: 1.15rem;
+  --fs-body: 1rem;
+  --fs-small: 0.9rem;
+  --fs-tiny: 0.78rem;
+
+  /* SPACING — controls the "breathing room" across the site */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 2rem;
+  --space-lg: 3.5rem;
+  --space-xl: 6rem;
+
+  --section-padding-y: 6rem;
+  --section-padding-x: clamp(1.5rem, 6vw, 4rem);
+  --max-width: 1240px;
+
+  /* SHAPE & MOTION */
+  --radius-sm: 4px;
+  --radius-md: 10px;
+  --border: 2px solid var(--dark);
+  --transition: 0.25s ease;
+}
+
+/* Dark mode palette — same variable names as above, new values.
+   Turned on by JS adding data-theme="dark" to <html>. */
+:root[data-theme="dark"] {
+  --cream: #0E2634;
+  --paper: #123044;
+  --yellow: #1C4A63;
+  --red: #5CC3F0;
+  --dark: #EAF6FC;
+}
+
+/* =========================================================
+   GLOBAL
+========================================================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 72px; /* matches the navbar's real height so scrolling to a section lands flush against it, with no gap showing the previous section's background */
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  color: var(--dark);
+  background: var(--cream);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  line-height: 1.05;
+  font-weight: 800; /* Inter needs an explicit heavy weight for the bold display look */
+}
+
+p {
+  max-width: 62ch; /* keeps body text readable */
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a,
+button {
+  -webkit-tap-highlight-color: transparent; /* we provide our own :active feedback instead */
+}
+
+ul {
+  list-style: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+.section-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: var(--section-padding-y) var(--section-padding-x);
+}
+
+.section-title {
+  font-size: var(--fs-h2);
+  color: var(--red);
+  margin-bottom: var(--space-lg);
+}
+
+.section-title-light {
+  color: var(--cream);
+}
+
+/* Reusable placeholder box for images that haven't been added yet.
+   Once you have a real photo, replace the surrounding <div> with an <img> tag. */
+.img-placeholder {
+  background: var(--yellow);
+  border: 2px dashed var(--dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--dark);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  padding: var(--space-md);
+}
+
+.btn {
+  display: inline-block;
+  background: var(--dark);
+  color: var(--cream);
+  font-weight: 700;
+  font-size: var(--fs-small);
+  letter-spacing: 0.03em;
+  padding: 1rem 2rem;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--dark);
+  transition: background var(--transition), color var(--transition), transform var(--transition);
+}
+
+.btn:hover {
+  background: var(--red);
+  border-color: var(--red);
+  color: var(--cream);
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+a:focus-visible,
+.btn:focus-visible,
+.nav-burger:focus-visible {
+  outline: 3px solid var(--red);
+  outline-offset: 3px;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--dark);
+  color: var(--cream);
+  padding: 0.75rem 1.25rem;
+  z-index: 999;
+}
+
+.skip-link:focus {
+  left: var(--space-sm);
+  top: var(--space-sm);
+}
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--cream);
+  border-bottom: 2px solid var(--dark);
+}
+
+.nav-inner {
+  padding: 1.1rem var(--section-padding-x);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+
+.nav-logo {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.2rem;
+  color: var(--dark);
+}
+
+.nav-menu {
+  display: flex;
+  gap: var(--space-md);
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.nav-link {
+  font-weight: 600;
+  font-size: var(--fs-small);
+  padding-bottom: 2px;
+  border-bottom: 2px solid transparent;
+  transition: border-color var(--transition), color var(--transition);
+}
+
+.nav-link:hover {
+  border-color: var(--red);
+  color: var(--red);
+}
+
+.nav-link:active {
+  color: var(--red);
+}
+
+.nav-toggle {
+  display: none;
+}
+
+.nav-burger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 26px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.nav-burger span {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background: var(--dark);
+}
+
+/* =========================================================
+   HERO
+========================================================= */
+.hero {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: start;
+  min-height: calc(100vh - 72px); /* 72px = navbar height, so navbar + hero together fill exactly one screen */
+  background: var(--yellow); /* actually a pale sky blue — see :root */
+  position: relative;
+}
+
+.hero-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-sm);
+  padding: 16vh var(--section-padding-x) var(--space-xl);
+}
+
+.hero-name {
+  font-size: var(--fs-hero);
+  color: var(--red);
+  margin-left: -0.04em; /* the bold "S" has extra visual space on its left — this nudges it flush with the text below */
+}
+
+.hero-role {
+  font-weight: 700;
+  font-size: var(--fs-lead);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--dark);
+  min-height: 1.6em; /* keeps layout stable while the typed text is short/empty */
+}
+
+/* Bouncing scroll cue anchored to the bottom of the hero */
+.hero-scroll-cue {
+  position: absolute;
+  left: 50%;
+  bottom: 8vh;
+  transform: translateX(-50%);
+  width: 34px;
+  height: 34px;
+  border: 2px solid var(--dark);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition), border-color var(--transition);
+}
+
+.hero-scroll-cue span {
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid var(--dark);
+  border-bottom: 2px solid var(--dark);
+  transform: rotate(45deg) translate(-2px, -2px);
+  transition: border-color var(--transition);
+  animation: hero-scroll-bounce 1.6s ease-in-out infinite;
+}
+
+.hero-scroll-cue:hover {
+  background: var(--dark);
+}
+
+.hero-scroll-cue:hover span {
+  border-color: var(--cream);
+}
+
+@keyframes hero-scroll-bounce {
+  0%, 100% { transform: rotate(45deg) translate(-2px, -2px); }
+  50% { transform: rotate(45deg) translate(2px, 2px); }
+}
+
+@media (max-width: 768px) {
+  .hero-scroll-cue {
+    display: none; /* the section is short enough on mobile that the cue just adds clutter */
+  }
+}
+
+.hero-intro {
+  font-size: var(--fs-lead);
+  max-width: 46ch;
+  margin-top: var(--space-xs);
+  text-align: justify;
+  text-align-last: left; /* keeps the short final line from stretching out */
+}
+
+.hero-text .btn {
+  margin-top: var(--space-sm);
+  width: fit-content;
+}
+
+.hero-visual {
+  background: var(--yellow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-lg);
+}
+
+.hero-photo-frame {
+  width: 100%;
+  max-width: 420px;
+  border: 2px solid var(--dark);
+  padding: 10px;
+  background: var(--cream);
+}
+
+.hero-photo {
+  aspect-ratio: 3 / 4;
+  width: 100%;
+  border: none;
+  background: var(--paper);
+}
+
+/* =========================================================
+   ABOUT
+========================================================= */
+.about {
+  background: var(--cream);
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  gap: var(--space-xl);
+  align-items: start;
+}
+
+.about-image {
+  aspect-ratio: 1 / 1;
+  width: 100%;
+}
+
+/* The real photo (as opposed to the dashed .img-placeholder box): fills the
+   square frame, centered. */
+img.about-image {
+  object-fit: cover;
+  object-position: 50% 50%;
+  border: 2px solid var(--dark);
+}
+
+.about-text p {
+  margin-bottom: var(--space-sm);
+  font-size: var(--fs-lead);
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: var(--space-md);
+}
+
+.tag {
+  border: 2px solid var(--dark);
+  border-radius: var(--radius-sm);
+  padding: 0.4rem 0.8rem;
+  font-size: var(--fs-tiny);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+/* =========================================================
+   PROJECTS
+========================================================= */
+.projects {
+  background: var(--paper);
+  border-top: 2px solid var(--dark);
+}
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-lg);
+}
+
+/* Makes a card span the full grid width, so it sits alone on its own row
+   instead of sharing a row with empty columns. Used for Data Visualization
+   and Resume so they each get their own line below the top 3 cards. */
+.project-card--full {
+  grid-column: 1 / -1;
+}
+
+.project-image {
+  aspect-ratio: 4 / 3;
+  width: 100%;
+  margin-bottom: var(--space-sm);
+}
+
+/* Data Visualization's screenshot lives in a full-width card, so on its own
+   .project-image would stretch edge-to-edge. Capping it here keeps the
+   dashboard image from dominating the section while staying responsive
+   (it still shrinks to fit on narrower screens). */
+.project-card--full .project-image {
+  max-width: 320px;
+}
+
+.project-category {
+  font-size: var(--fs-tiny);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--red);
+  margin-bottom: 0.3rem;
+}
+
+.project-name {
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+}
+
+.project-desc {
+  font-weight: 400;
+  margin-bottom: var(--space-sm);
+}
+
+/* Reuses the same pill look as the About section's .tag, just with
+   tighter spacing so it fits a compact project card. */
+.project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: var(--space-sm);
+}
+
+/* Row of action links for a card that has more than one (e.g. Ship Deck's
+   "View Live Website" + "View Figma Design"). Plain flex + gap so each
+   link keeps its normal .project-link look, just spaced apart. */
+.project-links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+/* Team-project disclosure line (e.g. "Team Project — my contribution: ...").
+   Kept visually secondary to the description so it reads as a caption. */
+.project-meta {
+  font-size: var(--fs-tiny);
+  font-style: italic;
+  color: var(--dark);
+  opacity: 0.75;
+  margin-bottom: var(--space-sm);
+}
+
+/* Real project screenshots (as opposed to the dashed .img-placeholder box):
+   "contain" + a light backdrop so the whole screenshot stays visible —
+   never cropped — inside the same box size as the placeholder cards. */
+img.project-image {
+  object-fit: contain;
+  background: var(--cream);
+  border: 2px solid var(--dark);
+}
+
+/* Compact bullet list for a project's key highlights/stats */
+.project-highlights {
+  list-style: disc;
+  padding-left: 1.1rem;
+  margin-bottom: var(--space-sm);
+  font-size: var(--fs-small);
+}
+
+.project-highlights li {
+  margin-bottom: 0.25rem;
+}
+
+.project-link {
+  font-weight: 700;
+  border-bottom: 2px solid var(--dark);
+  padding-bottom: 2px;
+  transition: color var(--transition), border-color var(--transition);
+}
+
+.project-link:hover {
+  color: var(--red);
+  border-color: var(--red);
+}
+
+.project-link:active {
+  opacity: 0.7;
+}
+
+/* =========================================================
+   SKILLS & TOOLS
+   Two flat tag lists: Skills, and Tools & Technologies.
+========================================================= */
+.skills {
+  background: var(--yellow);
+}
+
+.skills .section-title {
+  color: var(--dark);
+}
+
+.skills-groups {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.skills-group-title {
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--dark);
+  margin-bottom: var(--space-sm);
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--dark);
+}
+
+.skills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.skill-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  background: var(--cream);
+  border: 2px solid var(--dark);
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 1.1rem;
+  font-weight: 700;
+  font-size: var(--fs-small);
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition),
+    border-color var(--transition), transform var(--transition);
+}
+
+.skill-tag::after {
+  content: '↗';
+  font-weight: 700;
+  opacity: 0.5;
+  transition: opacity var(--transition), transform var(--transition);
+}
+
+.skill-tag:hover::after {
+  opacity: 1;
+  transform: translate(2px, -2px);
+}
+
+.skill-tag:hover {
+  background: var(--dark);
+  color: var(--cream);
+  transform: translateY(-2px);
+}
+
+.skill-tag:active {
+  transform: translateY(0) scale(0.96);
+}
+
+/* =========================================================
+   CONTACT
+========================================================= */
+.contact {
+  background: var(--red);
+  color: var(--cream);
+}
+
+.contact-list {
+  display: flex;
+  flex-direction: column;
+  border-top: 2px solid var(--cream);
+}
+
+.contact-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: var(--space-md) 0;
+  border-bottom: 2px solid var(--cream);
+  color: var(--cream);
+  transition: opacity var(--transition);
+}
+
+.contact-row:hover {
+  opacity: 0.7;
+}
+
+.contact-row:active {
+  opacity: 0.5;
+}
+
+.contact-label {
+  font-size: var(--fs-small);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  font-weight: 700;
+}
+
+.contact-value {
+  font-size: var(--fs-lead);
+  font-weight: 700;
+}
+
+.footer-note {
+  margin-top: var(--space-lg);
+  font-size: var(--fs-tiny);
+  opacity: 0.8;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .about-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-image {
+    max-width: 360px;
+  }
+
+  .projects-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  :root {
+    --section-padding-y: 4rem;
+    --section-padding-x: 4vw;
+  }
+
+  /* The logo and hero name sit further left than the rest of the
+     content on small screens — everything else keeps the padding above. */
+  .nav-inner {
+    padding-left: 2vw;
+  }
+
+  .hero-text {
+    padding-left: 2vw;
+  }
+
+  /* Collapsible mobile navigation (no JavaScript — checkbox driven) */
+  .nav-burger {
+    display: flex;
+  }
+
+  .nav-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    gap: 0;
+    background: var(--cream);
+    border-bottom: 2px solid var(--dark);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height var(--transition);
+  }
+
+  .nav-toggle:checked ~ .nav-menu {
+    max-height: 400px;
+  }
+
+  .nav-link {
+    padding: 1rem var(--section-padding-x);
+    border-bottom: 1px solid var(--dark);
+  }
+
+  .hero {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .hero-visual {
+    order: -1;
+    padding: var(--space-lg) var(--section-padding-x);
+  }
+
+  .hero-photo-frame {
+    max-width: 280px;
+  }
+
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-row {
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+}
+
+/* Respect users who have requested reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* =========================================================
+   INTERACTIVE ENHANCEMENTS (added)
+   Everything below supports script.js: dark mode, scroll-reveal
+   animations, the active nav link, the back-to-top button and
+   the scroll progress bar.
+========================================================= */
+
+/* Smooth color crossfade when dark mode is toggled */
+body,
+.navbar,
+.hero-visual,
+.hero-photo-frame,
+.about,
+.projects,
+.skills,
+.contact,
+.img-placeholder {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* ---- Dark mode toggle button (created by script.js, lives in the navbar) ---- */
+.theme-toggle {
+  background: none;
+  border: 2px solid var(--dark);
+  border-radius: var(--radius-sm);
+  color: var(--dark);
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition), color var(--transition), transform var(--transition);
+}
+
+.theme-toggle:hover {
+  background: var(--dark);
+  color: var(--cream);
+}
+
+.theme-toggle:active {
+  transform: scale(0.9);
+}
+
+/* ---- Back-to-top button (created by script.js) ---- */
+.back-to-top {
+  position: fixed;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 2px solid var(--dark);
+  background: var(--cream);
+  color: var(--dark);
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 90;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: opacity var(--transition), transform var(--transition),
+    visibility var(--transition), background var(--transition), color var(--transition);
+}
+
+.back-to-top.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.back-to-top:hover {
+  background: var(--red);
+  border-color: var(--red);
+  color: var(--cream);
+}
+
+.back-to-top:active {
+  transform: scale(0.9);
+}
+
+/* ---- Scroll progress bar (created by script.js) ---- */
+#scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0%;
+  background: var(--red);
+  z-index: 200;
+}
+
+/* ---- Scroll-reveal animation ----
+   script.js adds "reveal" to elements as the page loads, then
+   adds "is-visible" once each one scrolls into view. */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* A small stagger so grouped cards don't all animate at once */
+.projects-grid > .reveal:nth-child(2) {
+  transition-delay: 0.1s;
+}
+
+.projects-grid > .reveal:nth-child(3) {
+  transition-delay: 0.2s;
+}
+
+/* ---- Active nav link while scrolling ---- */
+.nav-link.active {
+  color: var(--red);
+  border-color: var(--red);
+}
+
+/* ---- Project card hover lift ---- */
+.project-card {
+  cursor: pointer; /* the whole card links out — see script.js */
+  transition: transform var(--transition);
+}
+
+.project-card:hover {
+  transform: translateY(-6px);
+}
+
+.project-card:active {
+  transform: translateY(-3px) scale(0.99);
+}
+
+.project-card:hover .project-image {
+  border-color: var(--red);
+}
