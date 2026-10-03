@@ -235,4 +235,134 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
+  /* ---------------------------------------------------------
+     10. Footer year
+     Keeps the "© <year> Silva Yunisa" line current automatically,
+     instead of a hardcoded year that goes stale every January.
+  --------------------------------------------------------- */
+  var currentYearEl = document.getElementById('current-year');
+  if (currentYearEl) {
+    currentYearEl.textContent = new Date().getFullYear();
+  }
+
+  /* ---------------------------------------------------------
+     11. Hero interactive dot grid
+     A grid of small dots drawn on a <canvas> behind the hero
+     text. Dots near the cursor grow and shift from the --dark
+     color to the --red accent color, then ease back when the
+     cursor moves away. Desktop/tablet only (matches the CSS
+     breakpoint that hides the canvas below 1024px) and skipped
+     entirely for anyone with reduced motion on.
+  --------------------------------------------------------- */
+  var heroDotCanvas = document.querySelector('.hero-dot-grid');
+  var heroEl = document.querySelector('.hero');
+
+  if (heroDotCanvas && heroEl && !prefersReducedMotion && window.matchMedia('(min-width: 769px)').matches) {
+    var ctx = heroDotCanvas.getContext('2d');
+    var dots = [];
+    var spacing = 38;
+    var influenceRadius = 130;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var mouseX = -9999;
+    var mouseY = -9999;
+    var baseColor = '#17394D';
+    var accentColor = '#1F6FA8';
+
+    var hexToRgb = function (hex) {
+      hex = hex.replace('#', '');
+      if (hex.length === 3) {
+        hex = hex.split('').map(function (c) { return c + c; }).join('');
+      }
+      var num = parseInt(hex, 16);
+      return { r: (num >> 16) & 255, g: (num >> 8) & 255, b: num & 255 };
+    };
+
+    var refreshDotColors = function () {
+      var rootStyles = getComputedStyle(document.documentElement);
+      baseColor = rootStyles.getPropertyValue('--dark').trim() || baseColor;
+      accentColor = rootStyles.getPropertyValue('--red').trim() || accentColor;
+    };
+
+    var buildGrid = function () {
+      var rect = heroEl.getBoundingClientRect();
+      heroDotCanvas.width = rect.width * dpr;
+      heroDotCanvas.height = rect.height * dpr;
+      heroDotCanvas.style.width = rect.width + 'px';
+      heroDotCanvas.style.height = rect.height + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      dots = [];
+      var cols = Math.ceil(rect.width / spacing) + 1;
+      var rows = Math.ceil(rect.height / spacing) + 1;
+      for (var i = 0; i < cols; i++) {
+        for (var j = 0; j < rows; j++) {
+          dots.push({ x: i * spacing, y: j * spacing, radius: 1.4, targetRadius: 1.4, mix: 0, targetMix: 0 });
+        }
+      }
+    };
+
+    var tick = function () {
+      var baseRgb = hexToRgb(baseColor);
+      var accentRgb = hexToRgb(accentColor);
+
+      ctx.clearRect(0, 0, heroDotCanvas.width, heroDotCanvas.height);
+
+      for (var k = 0; k < dots.length; k++) {
+        var dot = dots[k];
+        var dx = dot.x - mouseX;
+        var dy = dot.y - mouseY;
+        var dist = Math.sqrt(dx * dx + dy * dy);
+
+        if (dist < influenceRadius) {
+          var strength = 1 - dist / influenceRadius;
+          dot.targetRadius = 1.4 + strength * 3.2;
+          dot.targetMix = strength;
+        } else {
+          dot.targetRadius = 1.4;
+          dot.targetMix = 0;
+        }
+
+        dot.radius += (dot.targetRadius - dot.radius) * 0.18;
+        dot.mix += (dot.targetMix - dot.mix) * 0.18;
+
+        var r = Math.round(baseRgb.r + (accentRgb.r - baseRgb.r) * dot.mix);
+        var g = Math.round(baseRgb.g + (accentRgb.g - baseRgb.g) * dot.mix);
+        var b = Math.round(baseRgb.b + (accentRgb.b - baseRgb.b) * dot.mix);
+        var alpha = 0.22 + dot.mix * 0.55;
+
+        ctx.beginPath();
+        ctx.arc(dot.x, dot.y, dot.radius, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(' + r + ',' + g + ',' + b + ',' + alpha + ')';
+        ctx.fill();
+      }
+
+      requestAnimationFrame(tick);
+    };
+
+    refreshDotColors();
+    buildGrid();
+    requestAnimationFrame(tick);
+
+    heroEl.addEventListener('mousemove', function (e) {
+      var rect = heroEl.getBoundingClientRect();
+      mouseX = e.clientX - rect.left;
+      mouseY = e.clientY - rect.top;
+    });
+
+    heroEl.addEventListener('mouseleave', function () {
+      mouseX = -9999;
+      mouseY = -9999;
+    });
+
+    var dotGridResizeTimer;
+    window.addEventListener('resize', function () {
+      clearTimeout(dotGridResizeTimer);
+      dotGridResizeTimer = setTimeout(buildGrid, 200);
+    });
+
+    if (themeToggle) {
+      themeToggle.addEventListener('click', refreshDotColors);
+    }
+  }
+
 });

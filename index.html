@@ -82,6 +82,11 @@
         <a href="#projects" class="btn">View My Work</a>
       </div>
 
+      <!-- Interactive dot-grid background, drawn and animated by script.js.
+           Purely decorative (aria-hidden) — dots near the cursor light up.
+           Desktop/tablet only; skipped entirely with reduced motion on. -->
+      <canvas class="hero-dot-grid" aria-hidden="true"></canvas>
+
       <a href="#about" class="hero-scroll-cue" aria-label="Scroll to About section">
         <span></span>
       </a>
@@ -276,7 +281,7 @@
         </a>
       </div>
 
-      <p class="footer-note">© [2026] Silva Yunisa</p>
+      <p class="footer-note">© <span id="current-year">2026</span> Silva Yunisa</p>
     </div>
   </footer>
 

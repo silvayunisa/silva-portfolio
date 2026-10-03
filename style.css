@@ -266,11 +266,29 @@ a:focus-visible,
 }
 
 .hero-text {
+  position: relative;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: var(--space-sm);
   padding: 16vh var(--section-padding-x) var(--space-xl);
+}
+
+/* Interactive dot-grid background — animated by script.js, dots light up
+   near the cursor. Sits behind the hero text/button, desktop/tablet only. */
+.hero-dot-grid {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: block;
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .hero-dot-grid {
+    display: none;
+  }
 }
 
 .hero-name {
@@ -745,6 +763,21 @@ img.project-image {
   .contact-row {
     flex-direction: column;
     gap: 0.3rem;
+  }
+
+  /* Extra breathing room so the fixed back-to-top button in the
+     bottom-right corner never sits on top of the copyright line
+     on shorter phone screens. */
+  .footer-note {
+    margin-bottom: 3.5rem;
+  }
+
+  /* Slightly smaller on phones so it feels less intrusive in the corner. */
+  .back-to-top {
+    width: 40px;
+    height: 40px;
+    right: 1rem;
+    bottom: 1rem;
   }
 }
 
