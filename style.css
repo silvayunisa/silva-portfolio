@@ -714,6 +714,22 @@ img.project-image {
     padding-left: 2vw;
   }
 
+  /* The desktop clamp() bottoms out at 2.75rem (44px), which is still
+     oversized on a phone screen — scale it down further here so the
+     name/role/intro feel proportionate instead of towering over the
+     rest of the page. */
+  .hero-name {
+    font-size: clamp(2rem, 10vw, 2.6rem);
+  }
+
+  .hero-role {
+    font-size: 1rem;
+  }
+
+  .hero-intro {
+    font-size: 1rem;
+  }
+
   /* Collapsible mobile navigation (no JavaScript — checkbox driven) */
   .nav-burger {
     display: flex;
