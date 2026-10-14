@@ -846,10 +846,19 @@ img.project-image {
 
   .about-photo-wrap {
     max-width: 320px;
-    /* Breathing room now that the photo sits between the name and
-       the bio text, instead of trailing after everything. */
-    margin-top: var(--space-sm);
-    margin-bottom: var(--space-sm);
+    /* Generous breathing room now that the photo sits between the
+       name and the bio text — a tight 1rem here read as cramped;
+       this gives the photo its own clear space on both sides. */
+    margin-top: var(--space-md);
+    margin-bottom: var(--space-lg);
+  }
+
+  /* The name doesn't need as much air below the navbar as a mid-page
+     section does — the +4vh "hero" treatment above was sized for a
+     roomy desktop view and just pushed the name down unnecessarily
+     on a phone screen. */
+  .about--landing .section-inner {
+    padding-top: 2rem;
   }
 
   .projects-grid {
@@ -882,10 +891,11 @@ img.project-image {
     font-size: clamp(1.75rem, 8vw, 2.25rem);
   }
 
-  /* Photo shrinks a bit further and the floating badges tuck in
-     closer so nothing pokes past the edge of a narrow screen. */
+  /* Photo shrinks a bit further so it doesn't dominate a narrow
+     screen — leaves clearer, more deliberate space around it instead
+     of sitting almost edge-to-edge. */
   .about-photo-wrap {
-    max-width: 260px;
+    max-width: 220px;
   }
 
   /* Collapsible mobile navigation (no JavaScript — checkbox driven) */
