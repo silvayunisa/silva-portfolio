@@ -71,38 +71,42 @@
     ========================================================== -->
     <section id="about" class="about about--landing">
       <div class="section-inner">
+        <!-- Each piece below is its own grid item (not nested in a text
+             wrapper anymore) so CSS can place the photo right under the
+             name on mobile while keeping the side-by-side layout on
+             desktop — see .about-grid's grid-template-areas in style.css. -->
         <div class="about-grid">
-          <div class="about-text">
-            <!-- EDIT YOUR NAME HERE -->
-            <h1 class="hero-name hero-name--compact">SILVA YUNISA NASUTION</h1>
-
-            <!-- EDIT YOUR ABOUT TEXT HERE -->
-            <p>I&rsquo;m a Computer Science student at BINUS University with an interest in technology, design, and data. I enjoy exploring how technology can be used to create useful and engaging digital experiences.</p>
-            <p>Currently, I&rsquo;m learning and building projects in data analytics, UI/UX design, and web development, while continuing to explore new ways to combine creativity with technology.</p>
-
-            <div class="about-actions">
-              <a href="#projects" class="btn">View My Work</a>
-              <a href="#contact" class="btn btn-outline">Contact Me</a>
-            </div>
-
-            <!-- EDIT YOUR SOCIAL LINKS HERE (keep these in sync with the
-                 Contact section below — same three links, shown here too
-                 for quick access) -->
-            <div class="about-socials">
-              <a href="mailto:silvasatuenamlima@gmail.com" class="social-icon" aria-label="Email Silva">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m22 7-10 6L2 7"></path></svg>
-              </a>
-              <a href="https://www.linkedin.com/in/silva165" class="social-icon" target="_blank" rel="noopener" aria-label="Silva's LinkedIn profile">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
-              </a>
-              <a href="https://github.com/silvayunisa" class="social-icon" target="_blank" rel="noopener" aria-label="Silva's GitHub profile">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"></path></svg>
-              </a>
-            </div>
-          </div>
+          <!-- EDIT YOUR NAME HERE -->
+          <h1 class="hero-name hero-name--compact">SILVA YUNISA NASUTION</h1>
 
           <div class="about-photo-wrap">
             <img src="silva-profile.jpg" alt="Silva Yunisa Nasution" class="about-image">
+          </div>
+
+          <!-- EDIT YOUR ABOUT TEXT HERE -->
+          <div class="about-bio">
+            <p>I&rsquo;m a Computer Science student at BINUS University with an interest in technology, design, and data. I enjoy exploring how technology can be used to create useful and engaging digital experiences.</p>
+            <p>Currently, I&rsquo;m learning and building projects in data analytics, UI/UX design, and web development, while continuing to explore new ways to combine creativity with technology.</p>
+          </div>
+
+          <div class="about-actions">
+            <a href="#projects" class="btn">View My Work</a>
+            <a href="#contact" class="btn btn-outline">Contact Me</a>
+          </div>
+
+          <!-- EDIT YOUR SOCIAL LINKS HERE (keep these in sync with the
+               Contact section below — same three links, shown here too
+               for quick access) -->
+          <div class="about-socials">
+            <a href="mailto:silvasatuenamlima@gmail.com" class="social-icon" aria-label="Email Silva">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m22 7-10 6L2 7"></path></svg>
+            </a>
+            <a href="https://www.linkedin.com/in/silva165" class="social-icon" target="_blank" rel="noopener" aria-label="Silva's LinkedIn profile">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+            </a>
+            <a href="https://github.com/silvayunisa" class="social-icon" target="_blank" rel="noopener" aria-label="Silva's GitHub profile">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"></path></svg>
+            </a>
           </div>
         </div>
       </div>

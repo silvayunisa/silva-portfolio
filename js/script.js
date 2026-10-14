@@ -124,7 +124,8 @@ document.addEventListener('DOMContentLoaded', function () {
   var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   var revealTargets = document.querySelectorAll(
-    '.section-title, .hero-name, .about-photo-wrap, .about-text, ' +
+    '.section-title, .hero-name, .about-photo-wrap, .about-bio, ' +
+    '.about-actions, .about-socials, ' +
     '.project-card, .skills-group, ' +
     '.contact-list, .hero-visual'
   );

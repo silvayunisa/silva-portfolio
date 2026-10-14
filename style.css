@@ -361,14 +361,35 @@ a:focus-visible,
   padding-top: calc(var(--section-padding-y) + 4vh);
 }
 
+/* Named areas (rather than just two columns) so the photo can be
+   slotted in right under the name on mobile, instead of always
+   trailing at the very end — see the mobile override below. */
 .about-grid {
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
-  gap: var(--space-xl);
+  grid-template-areas:
+    "name    photo"
+    "bio     photo"
+    "actions photo"
+    "socials photo";
+  /* Only a COLUMN gap, between the text and the photo — the xl gap
+     was meant for that one split, not as a row gap too. With name/
+     bio/actions/socials now spanning 4 separate rows in the text
+     column, a row-gap here would add on top of their own tuned
+     margins below and shove them apart. Each item's own margin is
+     what sets the rhythm between them, same as it was before. */
+  column-gap: var(--space-xl);
+  row-gap: 0;
   align-items: center;
 }
 
-.about-text p {
+.about-grid > .hero-name     { grid-area: name; }
+.about-grid > .about-photo-wrap { grid-area: photo; }
+.about-grid > .about-bio     { grid-area: bio; }
+.about-grid > .about-actions { grid-area: actions; }
+.about-grid > .about-socials { grid-area: socials; }
+
+.about-bio p {
   margin-bottom: var(--space-sm);
   font-size: var(--fs-lead);
 }
@@ -804,12 +825,31 @@ img.project-image {
 
 /* Tablet */
 @media (max-width: 1024px) {
+  /* Single column — and the photo moves up to sit right under the
+     name (not after the bio/buttons/socials) so it reads as part of
+     the introduction instead of an afterthought at the bottom. */
   .about-grid {
     grid-template-columns: 1fr;
+    grid-template-areas:
+      "name"
+      "photo"
+      "bio"
+      "actions"
+      "socials";
+    /* No grid gap here either — same reasoning as the desktop rule
+       above. Spacing between name/photo/bio/actions/socials comes
+       entirely from their own margins (set below for the photo,
+       already in place for the rest) so it stays one consistent
+       rhythm instead of a gap value stacking on top of margins. */
+    row-gap: 0;
   }
 
   .about-photo-wrap {
     max-width: 320px;
+    /* Breathing room now that the photo sits between the name and
+       the bio text, instead of trailing after everything. */
+    margin-top: var(--space-sm);
+    margin-bottom: var(--space-sm);
   }
 
   .projects-grid {
