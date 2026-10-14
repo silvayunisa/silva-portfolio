@@ -124,9 +124,9 @@ document.addEventListener('DOMContentLoaded', function () {
   var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   var revealTargets = document.querySelectorAll(
-    '.section-title, .about-image, .about-text, ' +
+    '.section-title, .hero-name, .about-photo-wrap, .about-text, ' +
     '.project-card, .skills-group, ' +
-    '.contact-list, .hero-text, .hero-visual'
+    '.contact-list, .hero-visual'
   );
 
   if (!prefersReducedMotion && revealTargets.length > 0 && 'IntersectionObserver' in window) {
@@ -142,6 +142,14 @@ document.addEventListener('DOMContentLoaded', function () {
     revealTargets.forEach(function (target) {
       target.classList.add('reveal');
       revealObserver.observe(target);
+    });
+
+    // Stagger the project cards specifically so they cascade in one after
+    // another instead of all fading in at once (a plain CSS nth-child rule
+    // only covers a fixed number of cards — this works for however many
+    // project cards the grid actually has).
+    document.querySelectorAll('.projects-grid > .project-card').forEach(function (card, index) {
+      card.style.transitionDelay = (index * 0.08) + 's';
     });
   }
 
@@ -169,200 +177,234 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   /* ---------------------------------------------------------
-     8. Make project cards fully clickable (once they have a
-     real link). The "[PROJECT LINK]" text always works on its
-     own — this just lets you click anywhere on the card too.
-     Cards still using the "#" placeholder link stay inert, so
-     nothing happens until you add a real URL.
+     8. Project detail modal
+     Each project card has a "View Details" button. Clicking it
+     opens one shared modal, filled in from that card's own
+     content (category, title, image, description, team-project
+     note, highlights, tags, links) — nothing is duplicated or
+     invented, it's all read straight from the card. The card's
+     own links (e.g. "View on GitHub") keep working exactly as
+     before; the modal is just an extra way to preview a project
+     before clicking through.
   --------------------------------------------------------- */
-  document.querySelectorAll('.project-card').forEach(function (card) {
-    var link = card.querySelector('.project-link');
-    if (!link) return;
+  var projectModal = document.getElementById('project-modal');
+  var detailButtons = document.querySelectorAll('.project-view-details');
 
-    var href = link.getAttribute('href');
-    if (!href || href === '#') return;
+  if (projectModal && detailButtons.length > 0) {
+    var modalPanel = projectModal.querySelector('.project-modal-panel');
+    var modalCategory = document.getElementById('project-modal-category');
+    var modalTitle = document.getElementById('project-modal-title');
+    var modalImage = document.getElementById('project-modal-image');
+    var modalDesc = document.getElementById('project-modal-desc');
+    var modalMeta = document.getElementById('project-modal-meta');
+    var modalHighlights = document.getElementById('project-modal-highlights');
+    var modalTags = document.getElementById('project-modal-tags');
+    var modalLinks = document.getElementById('project-modal-links');
+    var modalCloseEls = projectModal.querySelectorAll('[data-modal-close]');
+    var lastFocusedEl = null;
 
-    card.addEventListener('click', function (e) {
-      if (e.target.closest('.project-link')) return; // the link already handles its own click
-      if (link.target === '_blank') {
-        window.open(href, '_blank', 'noopener');
+    var openModalFromCard = function (card, triggerEl) {
+      var category = card.querySelector('.project-category');
+      var title = card.querySelector('.project-name');
+      var image = card.querySelector('.project-image');
+      var desc = card.querySelector('.project-desc');
+      var meta = card.querySelector('.project-meta');
+      var highlights = card.querySelector('.project-highlights');
+      var tags = card.querySelectorAll('.project-tags .tag');
+      var links = card.querySelectorAll('.project-link');
+
+      modalCategory.textContent = category ? category.textContent : '';
+      modalTitle.textContent = title ? title.textContent : '';
+
+      if (image) {
+        modalImage.src = image.getAttribute('src');
+        modalImage.alt = image.getAttribute('alt') || '';
+        modalImage.style.display = 'block';
       } else {
-        window.location.href = href;
+        modalImage.removeAttribute('src');
+        modalImage.style.display = 'none';
+      }
+
+      modalDesc.textContent = desc ? desc.textContent : '';
+
+      if (meta) {
+        modalMeta.textContent = meta.textContent;
+        modalMeta.style.display = 'block';
+      } else {
+        modalMeta.textContent = '';
+        modalMeta.style.display = 'none';
+      }
+
+      modalHighlights.innerHTML = '';
+      if (highlights) {
+        highlights.querySelectorAll('li').forEach(function (li) {
+          var item = document.createElement('li');
+          item.textContent = li.textContent;
+          modalHighlights.appendChild(item);
+        });
+        modalHighlights.style.display = 'block';
+      } else {
+        modalHighlights.style.display = 'none';
+      }
+
+      modalTags.innerHTML = '';
+      tags.forEach(function (tagEl) {
+        var li = document.createElement('li');
+        li.className = 'tag';
+        li.textContent = tagEl.textContent;
+        modalTags.appendChild(li);
+      });
+
+      modalLinks.innerHTML = '';
+      links.forEach(function (linkEl) {
+        var a = document.createElement('a');
+        a.href = linkEl.getAttribute('href');
+        a.textContent = linkEl.textContent;
+        a.className = 'btn';
+        var targetAttr = linkEl.getAttribute('target');
+        var relAttr = linkEl.getAttribute('rel');
+        if (targetAttr) a.target = targetAttr;
+        if (relAttr) a.rel = relAttr;
+        modalLinks.appendChild(a);
+      });
+
+      lastFocusedEl = triggerEl;
+      projectModal.classList.add('is-open');
+      projectModal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      /* The panel is "visibility: hidden" until the .is-open class
+         above takes effect, so focusing it in this same tick can
+         silently fail in some browsers (it still looks "not
+         displayed" at the moment focus() runs). Waiting one frame
+         lets the browser apply the new style first. */
+      window.requestAnimationFrame(function () {
+        modalPanel.focus();
+      });
+    };
+
+    var closeModal = function () {
+      projectModal.classList.remove('is-open');
+      projectModal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      if (lastFocusedEl) {
+        lastFocusedEl.focus();
+      }
+    };
+
+    // The whole card opens the modal now — except a click that lands on
+    // a real <a> (the project's own links), which is left alone so it
+    // navigates normally instead of being swallowed by the card.
+    var projectCards = document.querySelectorAll('.project-card');
+    var pointerIsFine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+    projectCards.forEach(function (card) {
+      card.addEventListener('click', function (e) {
+        if (e.target.closest('a')) return;
+        // Whatever was actually clicked (the pill, or empty card space)
+        // is remembered as "where to return focus to" on close — falling
+        // back to the card's own button rather than the <article> itself,
+        // which can't receive focus.
+        var trigger = e.target.closest('.project-view-details') || card.querySelector('.project-view-details') || card;
+        openModalFromCard(card, trigger);
+      });
+
+      // Desktop/mouse only: the "View Details" tag eases toward the
+      // cursor as it moves inside the card. It's animated in JS frame
+      // by frame (instead of jumping straight to the pointer position
+      // via CSS) so it genuinely glides behind the cursor rather than
+      // snapping to it on every mousemove event.
+      if (pointerIsFine) {
+        var hint = card.querySelector('.project-view-details');
+        if (hint) {
+          var target = { x: 0, y: 0 };
+          var current = null; // null until the cursor has entered once
+          var raf = null;
+          var ease = 0.22;
+
+          var glide = function () {
+            current.x += (target.x - current.x) * ease;
+            current.y += (target.y - current.y) * ease;
+            hint.style.left = current.x + 'px';
+            hint.style.top = current.y + 'px';
+
+            var closeEnough = Math.abs(target.x - current.x) < 0.5 && Math.abs(target.y - current.y) < 0.5;
+            raf = closeEnough ? null : requestAnimationFrame(glide);
+          };
+
+          card.addEventListener('mousemove', function (e) {
+            var rect = card.getBoundingClientRect();
+            // Keep the tag fully inside the card (which clips its own
+            // overflow) so it never gets cut off near an edge — measured
+            // off its untransformed layout size, with a little extra
+            // room for the rotated corners and the offset shadow.
+            var halfW = hint.offsetWidth / 2 + 10;
+            var halfH = hint.offsetHeight / 2 + 10;
+            var rawX = e.clientX - rect.left;
+            var rawY = e.clientY - rect.top;
+            target.x = Math.min(Math.max(rawX, halfW), rect.width - halfW);
+            target.y = Math.min(Math.max(rawY, halfH), rect.height - halfH);
+
+            if (!current) {
+              // First move inside this card: place it right at the
+              // cursor instead of gliding in from a stale corner.
+              current = { x: target.x, y: target.y };
+              hint.style.left = current.x + 'px';
+              hint.style.top = current.y + 'px';
+            } else if (!raf) {
+              raf = requestAnimationFrame(glide);
+            }
+          });
+
+          // Keyboard focus uses a fixed corner position (see the
+          // :focus-visible rule in CSS), not the cursor-follow position.
+          // An inline left/top left over from an earlier mouse hover has
+          // higher priority than that stylesheet rule, so it's cleared
+          // here to let the fixed corner position apply cleanly.
+          hint.addEventListener('focus', function () {
+            hint.style.left = '';
+            hint.style.top = '';
+          });
+        }
       }
     });
-  });
 
-  /* ---------------------------------------------------------
-     9. Typewriter effect for the hero role line
-     Cycles through the roles listed in the data-roles attribute
-     on #hero-role-text (edit that list in index.html to change
-     them). Skipped for anyone with "reduce motion" on — they
-     just see the first role, held in place.
-  --------------------------------------------------------- */
-  var heroRoleText = document.getElementById('hero-role-text');
+    modalCloseEls.forEach(function (el) {
+      el.addEventListener('click', closeModal);
+    });
 
-  if (heroRoleText && !prefersReducedMotion) {
-    var roles = heroRoleText.getAttribute('data-roles')
-      .split(',')
-      .map(function (role) { return role.trim(); })
-      .filter(Boolean);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && projectModal.classList.contains('is-open')) {
+        closeModal();
+      }
+    });
 
-    if (roles.length > 1) {
-      var roleIndex = 0;
-      var charIndex = roles[0].length; // the first role is already shown in the HTML
-      var isDeleting = false;
+    // Simple focus trap: while the modal is open, Tab cycles through its
+    // own focusable elements instead of escaping out to the page behind it.
+    projectModal.addEventListener('keydown', function (e) {
+      if (e.key !== 'Tab' || !projectModal.classList.contains('is-open')) return;
+      var focusable = projectModal.querySelectorAll('a[href], button:not([disabled])');
+      if (focusable.length === 0) return;
+      var first = focusable[0];
+      var last = focusable[focusable.length - 1];
 
-      var typeRole = function () {
-        var currentRole = roles[roleIndex];
-        charIndex += isDeleting ? -1 : 1;
-        heroRoleText.textContent = currentRole.slice(0, charIndex);
-
-        var typingSpeed = isDeleting ? 35 : 70;
-
-        if (!isDeleting && charIndex === currentRole.length) {
-          typingSpeed = 1800; // pause once fully typed
-          isDeleting = true;
-        } else if (isDeleting && charIndex === 0) {
-          isDeleting = false;
-          roleIndex = (roleIndex + 1) % roles.length;
-          typingSpeed = 300; // brief pause before typing the next role
-        }
-
-        setTimeout(typeRole, typingSpeed);
-      };
-
-      setTimeout(typeRole, 1800); // hold the first role before cycling starts
-    }
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    });
   }
 
   /* ---------------------------------------------------------
-     10. Footer year
+     9. Footer year
      Keeps the "© <year> Silva Yunisa" line current automatically,
      instead of a hardcoded year that goes stale every January.
   --------------------------------------------------------- */
   var currentYearEl = document.getElementById('current-year');
   if (currentYearEl) {
     currentYearEl.textContent = new Date().getFullYear();
-  }
-
-  /* ---------------------------------------------------------
-     11. Hero interactive dot grid
-     A grid of small dots drawn on a <canvas> behind the hero
-     text. Dots near the cursor grow and shift from the --dark
-     color to the --red accent color, then ease back when the
-     cursor moves away. Desktop/tablet only (matches the CSS
-     breakpoint that hides the canvas below 1024px) and skipped
-     entirely for anyone with reduced motion on.
-  --------------------------------------------------------- */
-  var heroDotCanvas = document.querySelector('.hero-dot-grid');
-  var heroEl = document.querySelector('.hero');
-
-  if (heroDotCanvas && heroEl && !prefersReducedMotion && window.matchMedia('(min-width: 769px)').matches) {
-    var ctx = heroDotCanvas.getContext('2d');
-    var dots = [];
-    var spacing = 38;
-    var influenceRadius = 130;
-    var dpr = Math.min(window.devicePixelRatio || 1, 2);
-    var mouseX = -9999;
-    var mouseY = -9999;
-    var baseColor = '#17394D';
-    var accentColor = '#1F6FA8';
-
-    var hexToRgb = function (hex) {
-      hex = hex.replace('#', '');
-      if (hex.length === 3) {
-        hex = hex.split('').map(function (c) { return c + c; }).join('');
-      }
-      var num = parseInt(hex, 16);
-      return { r: (num >> 16) & 255, g: (num >> 8) & 255, b: num & 255 };
-    };
-
-    var refreshDotColors = function () {
-      var rootStyles = getComputedStyle(document.documentElement);
-      baseColor = rootStyles.getPropertyValue('--dark').trim() || baseColor;
-      accentColor = rootStyles.getPropertyValue('--red').trim() || accentColor;
-    };
-
-    var buildGrid = function () {
-      var rect = heroEl.getBoundingClientRect();
-      heroDotCanvas.width = rect.width * dpr;
-      heroDotCanvas.height = rect.height * dpr;
-      heroDotCanvas.style.width = rect.width + 'px';
-      heroDotCanvas.style.height = rect.height + 'px';
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-      dots = [];
-      var cols = Math.ceil(rect.width / spacing) + 1;
-      var rows = Math.ceil(rect.height / spacing) + 1;
-      for (var i = 0; i < cols; i++) {
-        for (var j = 0; j < rows; j++) {
-          dots.push({ x: i * spacing, y: j * spacing, radius: 1.4, targetRadius: 1.4, mix: 0, targetMix: 0 });
-        }
-      }
-    };
-
-    var tick = function () {
-      var baseRgb = hexToRgb(baseColor);
-      var accentRgb = hexToRgb(accentColor);
-
-      ctx.clearRect(0, 0, heroDotCanvas.width, heroDotCanvas.height);
-
-      for (var k = 0; k < dots.length; k++) {
-        var dot = dots[k];
-        var dx = dot.x - mouseX;
-        var dy = dot.y - mouseY;
-        var dist = Math.sqrt(dx * dx + dy * dy);
-
-        if (dist < influenceRadius) {
-          var strength = 1 - dist / influenceRadius;
-          dot.targetRadius = 1.4 + strength * 3.2;
-          dot.targetMix = strength;
-        } else {
-          dot.targetRadius = 1.4;
-          dot.targetMix = 0;
-        }
-
-        dot.radius += (dot.targetRadius - dot.radius) * 0.18;
-        dot.mix += (dot.targetMix - dot.mix) * 0.18;
-
-        var r = Math.round(baseRgb.r + (accentRgb.r - baseRgb.r) * dot.mix);
-        var g = Math.round(baseRgb.g + (accentRgb.g - baseRgb.g) * dot.mix);
-        var b = Math.round(baseRgb.b + (accentRgb.b - baseRgb.b) * dot.mix);
-        var alpha = 0.22 + dot.mix * 0.55;
-
-        ctx.beginPath();
-        ctx.arc(dot.x, dot.y, dot.radius, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(' + r + ',' + g + ',' + b + ',' + alpha + ')';
-        ctx.fill();
-      }
-
-      requestAnimationFrame(tick);
-    };
-
-    refreshDotColors();
-    buildGrid();
-    requestAnimationFrame(tick);
-
-    heroEl.addEventListener('mousemove', function (e) {
-      var rect = heroEl.getBoundingClientRect();
-      mouseX = e.clientX - rect.left;
-      mouseY = e.clientY - rect.top;
-    });
-
-    heroEl.addEventListener('mouseleave', function () {
-      mouseX = -9999;
-      mouseY = -9999;
-    });
-
-    var dotGridResizeTimer;
-    window.addEventListener('resize', function () {
-      clearTimeout(dotGridResizeTimer);
-      dotGridResizeTimer = setTimeout(buildGrid, 200);
-    });
-
-    if (themeToggle) {
-      themeToggle.addEventListener('click', refreshDotColors);
-    }
   }
 
 });

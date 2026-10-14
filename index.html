@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Silva Yunisa — Portfolio</title>
+  <title>Silva Yunisa Portfolio</title>
   <meta name="description" content="Personal biography and portfolio of Silva Yunisa, a Computer Science student exploring UI/UX, data analytics, web development and creative design.">
 
   <!-- Applies a saved/system dark-mode preference before the page paints,
@@ -41,16 +41,19 @@
   <header class="navbar">
     <div class="nav-inner">
       <!-- EDIT YOUR NAME HERE (short version / initials used as the logo) -->
-      <a href="#home" class="nav-logo">Silva Yunisa</a>
+      <a href="#about" class="nav-logo">Silva Yunisa</a>
 
       <div class="nav-right">
         <input type="checkbox" id="nav-toggle" class="nav-toggle">
         <label for="nav-toggle" class="nav-burger" aria-label="Toggle navigation menu">
           <span></span><span></span><span></span>
         </label>
+        <!-- Dims the page behind the open mobile menu and doubles as a
+             tap-to-close area — it's just a second label for the same
+             checkbox, so no JavaScript is needed for either job. -->
+        <label for="nav-toggle" class="nav-backdrop" aria-hidden="true"></label>
 
         <nav class="nav-menu" aria-label="Primary">
-          <a href="#home" class="nav-link">Home</a>
           <a href="#about" class="nav-link">About</a>
           <a href="#projects" class="nav-link">Projects</a>
           <a href="#skills" class="nav-link">Skills</a>
@@ -63,57 +66,43 @@
   <main id="main">
 
     <!-- =========================================================
-         HERO
+         ABOUT (also the landing section — merges the old separate
+         "Home" hero into About, so the name/role live here now)
     ========================================================== -->
-    <section id="home" class="hero">
-      <div class="hero-text">
-        <!-- EDIT YOUR NAME HERE -->
-        <h1 class="hero-name">SILVA YUNISA NASUTION</h1>
-
-        <!-- EDIT YOUR ROLE / SHORT TITLE HERE — script.js types these out one
-             at a time. Add, remove, or reorder <span> items freely. -->
-        <p class="hero-role">
-          <span id="hero-role-text" class="hero-role-text" data-roles="Computer Science Student, UI/UX Design Enthusiast, Data Analytics Enthusiast, Aspiring Web Developer">Computer Science Student</span>
-        </p>
-
-        <!-- EDIT YOUR SHORT INTRODUCTION HERE -->
-        <p class="hero-intro">Currently exploring data analytics, UI/UX design, and web technologies while building practical digital projects as a Computer Science student at BINUS University.</p>
-
-        <a href="#projects" class="btn">View My Work</a>
-      </div>
-
-      <!-- Interactive dot-grid background, drawn and animated by script.js.
-           Purely decorative (aria-hidden) — dots near the cursor light up.
-           Desktop/tablet only; skipped entirely with reduced motion on. -->
-      <canvas class="hero-dot-grid" aria-hidden="true"></canvas>
-
-      <a href="#about" class="hero-scroll-cue" aria-label="Scroll to About section">
-        <span></span>
-      </a>
-    </section>
-
-    <!-- =========================================================
-         ABOUT
-    ========================================================== -->
-    <section id="about" class="about">
+    <section id="about" class="about about--landing">
       <div class="section-inner">
-        <h2 class="section-title">About</h2>
-
         <div class="about-grid">
-          <img src="silva-profile.jpg" alt="Silva Yunisa Nasution" class="about-image">
-
           <div class="about-text">
+            <!-- EDIT YOUR NAME HERE -->
+            <h1 class="hero-name hero-name--compact">SILVA YUNISA NASUTION</h1>
+
             <!-- EDIT YOUR ABOUT TEXT HERE -->
             <p>I&rsquo;m a Computer Science student at BINUS University with an interest in technology, design, and data. I enjoy exploring how technology can be used to create useful and engaging digital experiences.</p>
             <p>Currently, I&rsquo;m learning and building projects in data analytics, UI/UX design, and web development, while continuing to explore new ways to combine creativity with technology.</p>
 
-            <!-- These interest tags are optional — add, remove, or rename them freely -->
-            <ul class="tag-list">
-              <li class="tag">UI/UX</li>
-              <li class="tag">Data Analytics</li>
-              <li class="tag">Web Development</li>
-              <li class="tag">Creative Design</li>
-            </ul>
+            <div class="about-actions">
+              <a href="#projects" class="btn">View My Work</a>
+              <a href="#contact" class="btn btn-outline">Contact Me</a>
+            </div>
+
+            <!-- EDIT YOUR SOCIAL LINKS HERE (keep these in sync with the
+                 Contact section below — same three links, shown here too
+                 for quick access) -->
+            <div class="about-socials">
+              <a href="mailto:silvasatuenamlima@gmail.com" class="social-icon" aria-label="Email Silva">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m22 7-10 6L2 7"></path></svg>
+              </a>
+              <a href="https://www.linkedin.com/in/silva165" class="social-icon" target="_blank" rel="noopener" aria-label="Silva's LinkedIn profile">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+              </a>
+              <a href="https://github.com/silvayunisa" class="social-icon" target="_blank" rel="noopener" aria-label="Silva's GitHub profile">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"></path></svg>
+              </a>
+            </div>
+          </div>
+
+          <div class="about-photo-wrap">
+            <img src="silva-profile.jpg" alt="Silva Yunisa Nasution" class="about-image">
           </div>
         </div>
       </div>
@@ -142,6 +131,7 @@
             </ul>
             <!-- Put the PDF sejajar dengan index.html (folder utama proyek) -->
             <a href="Data_Analytics_Project.pdf" class="project-link" target="_blank" rel="noopener">View Project PDF</a>
+            <button type="button" class="project-view-details">View Details</button>
           </article>
 
           <article class="project-card">
@@ -158,6 +148,7 @@
               <li class="tag">MySQL</li>
             </ul>
             <a href="https://github.com/silvayunisa/studybuddy-software-engineering" class="project-link" target="_blank" rel="noopener">View on GitHub</a>
+            <button type="button" class="project-view-details">View Details</button>
           </article>
 
           <article class="project-card">
@@ -176,6 +167,7 @@
               <a href="https://ship-deckk-silva.vercel.app" class="project-link" target="_blank" rel="noopener">View Live Website</a>
               <a href="https://www.figma.com/design/VSkzQX7PcVqYZijY5WyXyC/ShipDeckK?node-id=0-1&t=yx1T8kuCjYB8Q0Pj-1" class="project-link" target="_blank" rel="noopener">View Figma Design</a>
             </div>
+            <button type="button" class="project-view-details">View Details</button>
           </article>
 
           <!-- ↓ Full-width row: Data Visualization sits on its own line below the 3 cards above ↓ -->
@@ -201,6 +193,7 @@
               <li>Interactive department and job title filters</li>
             </ul>
             <a href="https://public.tableau.com/views/HR_EmployeeAttritionDashboard_17905151270160/MainDashboard" class="project-link" target="_blank" rel="noopener">View Dashboard</a>
+            <button type="button" class="project-view-details">View Details</button>
           </article>
           <!-- ↑ Copy a .project-card block above to add another project ↑ -->
 
@@ -212,6 +205,7 @@
             <h3 class="project-name">My CV / Resume</h3>
             <p class="project-desc">Computer Science student at BINUS University with hands-on experience across UI/UX design, data analytics, and web development, plus a track record of technical, creative, and community-focused roles.</p>
             <a href="Silva_Yunisa_CV.pdf" class="project-link" target="_blank" rel="noopener">View / Download</a>
+            <button type="button" class="project-view-details">View Details</button>
           </article>
 
         </div>
@@ -247,6 +241,7 @@
               <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML" class="skill-tag" target="_blank" rel="noopener">HTML</a></li>
               <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS" class="skill-tag" target="_blank" rel="noopener">CSS</a></li>
               <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" class="skill-tag" target="_blank" rel="noopener">JavaScript</a></li>
+              <li><a href="https://laravel.com" class="skill-tag" target="_blank" rel="noopener">Laravel</a></li>
               <li><a href="https://www.tableau.com" class="skill-tag" target="_blank" rel="noopener">Tableau</a></li>
               <li><a href="https://powerbi.microsoft.com" class="skill-tag" target="_blank" rel="noopener">Power BI</a></li>
               <li><a href="https://github.com" class="skill-tag" target="_blank" rel="noopener">Git / GitHub</a></li>
@@ -263,7 +258,7 @@
   ========================================================== -->
   <footer id="contact" class="contact">
     <div class="section-inner">
-      <h2 class="section-title section-title-light">Contact</h2>
+      <h2 class="section-title">Contact</h2>
 
       <!-- EDIT YOUR CONTACT INFORMATION HERE -->
       <div class="contact-list">
@@ -284,6 +279,28 @@
       <p class="footer-note">© <span id="current-year">2026</span> Silva Yunisa</p>
     </div>
   </footer>
+
+  <!-- =========================================================
+       PROJECT DETAIL MODAL
+       One shared modal — script.js fills it in from whichever
+       project card's "View Details" button was clicked. Nothing
+       here is hand-written content; it's all copied from the
+       matching project card, so there's only one source of truth.
+  ========================================================== -->
+  <div class="project-modal" id="project-modal" aria-hidden="true">
+    <div class="project-modal-backdrop" data-modal-close></div>
+    <div class="project-modal-panel" role="dialog" aria-modal="true" aria-labelledby="project-modal-title" tabindex="-1">
+      <button type="button" class="project-modal-close" data-modal-close aria-label="Close project details">&times;</button>
+      <p class="project-modal-category" id="project-modal-category"></p>
+      <h3 class="project-modal-title" id="project-modal-title"></h3>
+      <img class="project-modal-image" id="project-modal-image" alt="">
+      <p class="project-modal-desc" id="project-modal-desc"></p>
+      <p class="project-modal-meta" id="project-modal-meta"></p>
+      <ul class="project-modal-highlights" id="project-modal-highlights"></ul>
+      <ul class="project-modal-tags" id="project-modal-tags"></ul>
+      <div class="project-modal-links" id="project-modal-links"></div>
+    </div>
+  </div>
 
   <script src="js/script.js"></script>
 </body>
