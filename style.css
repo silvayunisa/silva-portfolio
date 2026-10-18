@@ -508,7 +508,7 @@ img.about-image {
 
 /* Makes a card span the full grid width, so it sits alone on its own row
    instead of sharing a row with empty columns. Used for Data Visualization
-   and Resume so they each get their own line below the top 3 cards. */
+   so it gets its own line below the top 3 cards. */
 .project-card--full {
   grid-column: 1 / -1;
 }
@@ -973,6 +973,7 @@ img.project-image {
     right: 1rem;
     bottom: 1rem;
   }
+
 }
 
 /* Respect users who have requested reduced motion */
@@ -1006,7 +1007,9 @@ body,
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
-/* ---- Dark mode toggle button (created by script.js, lives in the navbar) ---- */
+/* ---- Dark/light mode toggle button (created by script.js) ----
+   Lives at the end of the navbar, after the Contact link, instead of
+   at the start where it used to crowd the About link. */
 .theme-toggle {
   background: none;
   border: 2px solid var(--dark);

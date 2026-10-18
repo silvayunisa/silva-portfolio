@@ -42,8 +42,31 @@ document.addEventListener('DOMContentLoaded', function () {
     return document.documentElement.getAttribute('data-theme') === 'dark';
   }
 
+  // Simple hand-drawn line icons (not emoji) so the button matches the
+  // rest of the site's flat, line-art style instead of looking like a
+  // glossy stock sun/moon. stroke="currentColor" means they automatically
+  // pick up the button's own color (and its hover/dark-mode variants).
+  var ICON_SUN =
+    '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" ' +
+    'stroke-width="2" stroke-linecap="round" aria-hidden="true">' +
+    '<circle cx="12" cy="12" r="4.3"/>' +
+    '<line x1="12" y1="2" x2="12" y2="4.5"/>' +
+    '<line x1="12" y1="19.5" x2="12" y2="22"/>' +
+    '<line x1="2" y1="12" x2="4.5" y2="12"/>' +
+    '<line x1="19.5" y1="12" x2="22" y2="12"/>' +
+    '<line x1="4.93" y1="4.93" x2="6.64" y2="6.64"/>' +
+    '<line x1="17.36" y1="17.36" x2="19.07" y2="19.07"/>' +
+    '<line x1="4.93" y1="19.07" x2="6.64" y2="17.36"/>' +
+    '<line x1="17.36" y1="6.64" x2="19.07" y2="4.93"/>' +
+    '</svg>';
+  var ICON_MOON =
+    '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" ' +
+    'stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+    '<path d="M20.5 14.2A8.5 8.5 0 1 1 9.8 3.5a6.8 6.8 0 0 0 10.7 10.7Z"/>' +
+    '</svg>';
+
   function updateThemeIcon() {
-    themeToggle.textContent = isDarkMode() ? '☀️' : '🌙';
+    themeToggle.innerHTML = isDarkMode() ? ICON_SUN : ICON_MOON;
   }
 
   updateThemeIcon();
@@ -59,9 +82,11 @@ document.addEventListener('DOMContentLoaded', function () {
     updateThemeIcon();
   });
 
+  // Placed at the end of the navbar (after the Contact link) instead of
+  // the start, so it no longer crowds the About link.
   var navRight = document.querySelector('.nav-right');
   if (navRight) {
-    navRight.prepend(themeToggle);
+    navRight.appendChild(themeToggle);
   } else {
     document.body.appendChild(themeToggle);
   }
