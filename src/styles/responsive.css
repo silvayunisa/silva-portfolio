@@ -1,0 +1,310 @@
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+/* Short desktop screens (typical 13" laptops): tighter spacing so the whole
+   hero, including the buttons and icons, fits on the first screen. */
+@media (min-width: 1025px) and (max-height: 800px) {
+  .about--landing .section-inner {
+    padding-top: var(--space-md);
+    padding-bottom: var(--space-sm);
+  }
+
+  .about-photo-wrap {
+    max-width: 330px;
+  }
+
+  .hero-name {
+    margin-bottom: var(--space-sm);
+  }
+
+  .about-bio p {
+    font-size: 1.05rem;
+  }
+
+  .about-bio p + p {
+    margin-top: 0.6rem;
+  }
+
+  .about-actions,
+  .about-socials {
+    margin-top: 1.25rem;
+  }
+
+  .hero-notes {
+    margin-top: var(--space-md);
+  }
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  /* Single column: a small photo first, then the name under it, then the
+     bio, buttons and social icons. */
+  .about-grid {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "photo"
+      "name"
+      "bio"
+      "actions"
+      "socials";
+    /* No grid gap here either — same reasoning as the desktop rule
+       above. Spacing between name/photo/bio/actions/socials comes
+       entirely from their own margins (set below for the photo,
+       already in place for the rest) so it stays one consistent
+       rhythm instead of a gap value stacking on top of margins. */
+    row-gap: 0;
+  }
+
+  .hero-name {
+    font-size: clamp(3rem, 8vw, 4.25rem);
+  }
+
+  .about-photo-wrap {
+    justify-self: start;
+    max-width: 210px;
+    margin-top: 0;
+    margin-bottom: var(--space-md);
+  }
+
+  /* The panel no longer needs to fill the screen, and the corner captions
+     (which only made sense along the bottom of a full-screen hero) go away. */
+  .about--landing {
+    min-height: 0;
+  }
+
+  .about--landing .section-inner {
+    padding-top: var(--space-lg);
+    padding-bottom: var(--space-lg);
+  }
+
+  .hero-notes {
+    display: none;
+  }
+
+  .project-card {
+    column-gap: var(--space-md);
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  :root {
+    --section-padding-y: 3rem;
+    --section-padding-x: 5vw;
+    --fs-h2: 2.2rem;
+  }
+
+  /* ---- Phone hero ----
+     One centered column, top to bottom: round photo, name, bio, the two
+     buttons side by side, social icons. */
+  .hero-name {
+    font-size: clamp(2.4rem, 11vw, 3.1rem);
+    line-height: 1;
+    text-align: center;
+    margin: 0 0 var(--space-sm);
+  }
+
+  .about--landing .section-inner {
+    padding-top: var(--space-md); /* keep the photo close to the navbar on phones */
+    padding-bottom: var(--space-md);
+  }
+
+  .about-photo-wrap {
+    justify-self: center;
+    max-width: 128px;
+    margin-bottom: var(--space-sm);
+  }
+
+  /* Phone: no tilt, a plain round photo with a white ring. */
+  .about-photo-card {
+    border-width: 4px;
+    border-radius: 50%;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .about-image {
+    aspect-ratio: 1 / 1;
+    object-position: 50% 14%;
+  }
+
+  /* The bio is left-aligned (easier to read than centered paragraphs);
+     the photo and name above it stay centered. */
+  .about-bio {
+    text-align: left;
+  }
+
+  .about-bio p {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .about-bio p + p {
+    margin-top: 0.75rem;
+  }
+
+  .about-actions {
+    flex-wrap: nowrap;
+    gap: 0.6rem;
+    margin-top: var(--space-md);
+  }
+
+  .about-actions .btn {
+    flex: 1 1 0;
+    min-width: 0;
+    width: auto;
+    text-align: center;
+    padding: 0.9rem 0.5rem;
+  }
+
+  .about-socials {
+    justify-content: center;
+    margin-top: var(--space-sm);
+  }
+
+  /* Collapsible mobile navigation. Open/closed comes from the "is-open"
+     class that Navbar.jsx toggles on .nav-right. */
+  .nav-burger {
+    display: flex;
+  }
+
+  .nav-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    gap: 0;
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+    max-height: 0;
+    overflow: hidden;
+    /* visibility keeps the collapsed links out of the Tab order (and away
+       from screen readers). It only flips to "hidden" AFTER the close
+       animation has finished, so the menu still slides away smoothly. */
+    visibility: hidden;
+    transition: max-height var(--transition), visibility 0s linear var(--transition);
+  }
+
+  .nav-right.is-open .nav-menu {
+    max-height: 400px;
+    visibility: visible;
+    transition: max-height var(--transition), visibility 0s;
+  }
+
+  .nav-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(23, 57, 77, 0.55);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transition);
+  }
+
+  .nav-right.is-open .nav-backdrop {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .nav-link {
+    padding: 1rem var(--section-padding-x);
+    border-bottom: 1px solid var(--line);
+    color: var(--ink);
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  /* In the dropdown the sweeping underline makes no sense (it would be a
+     thick bar across the whole row): the current section gets a tinted row
+     and an accent bar on the left instead. */
+  .nav-link::after {
+    display: none;
+  }
+
+  .nav-link.active {
+    color: var(--accent);
+    font-weight: 600;
+    background: var(--tint);
+    box-shadow: inset 3px 0 0 var(--accent);
+  }
+
+  .nav-link:last-child {
+    border-bottom: 0;
+  }
+
+  .nav-menu {
+    box-shadow: 0 18px 28px -18px rgba(0, 0, 0, 0.4);
+  }
+
+  /* Skills: smaller chips so two or three fit per row. */
+  .skills-list {
+    gap: 0.5rem;
+  }
+
+  .skill-tag {
+    padding: 0.5rem 0.9rem;
+    font-size: 0.88rem;
+  }
+
+  /* Project rows stack: name, details, screenshot, button. */
+  .project-card {
+    grid-template-columns: minmax(0, 1fr);
+    /* full width, so the tint of the row in the middle of the screen reaches both edges */
+    margin-inline: calc(var(--section-padding-x) * -1);
+    padding: var(--space-md) var(--section-padding-x);
+    border-radius: 0;
+  }
+
+  .project-head,
+  .project-body,
+  img.project-image,
+  .project-view-details {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .project-head {
+    margin-bottom: var(--space-sm);
+  }
+
+  .project-card::before,
+  .project-card:last-child::after {
+    left: var(--section-padding-x);
+    right: var(--section-padding-x);
+  }
+
+  .project-highlights {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .contact-row {
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .contact-value {
+    text-align: left;
+  }
+
+  .contact-row::before {
+    inset: 0 -0.75rem;
+  }
+
+  /* Extra breathing room so the fixed back-to-top button in the
+     bottom-right corner never sits on top of the copyright line
+     on shorter phone screens. */
+  .footer-note {
+    margin-bottom: 3.5rem;
+  }
+
+  /* Slightly smaller on phones so it feels less intrusive in the corner. */
+  .back-to-top {
+    width: 40px;
+    height: 40px;
+    right: 1rem;
+    bottom: 1rem;
+  }
+
+}

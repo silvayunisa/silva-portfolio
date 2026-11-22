@@ -1,0 +1,269 @@
+/* =========================================================
+   HERO / ABOUT
+   Same surface as the rest of the page (sky blue by day, dark at
+   night). The name is the one loud thing on the page: huge, heavy,
+   condensed capitals. Next to it a tilted photo in a white frame.
+   Everything else stays quiet.
+========================================================= */
+.about {
+  background: var(--surface);
+}
+
+.about--landing {  /* Fill the first screen under the 72px navbar so the corner captions sit at the bottom. */
+  min-height: calc(100svh - 72px);
+  display: flex;
+  flex-direction: column;
+}
+
+.about--landing .section-inner {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding-top: var(--space-lg);
+  padding-bottom: var(--space-md);
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
+  grid-template-areas:
+    "name    photo"
+    "bio     photo"
+    "actions photo"
+    "socials photo";
+  grid-template-rows: auto auto auto auto;
+  column-gap: var(--space-lg);
+  row-gap: 0;
+  align-items: start;
+  margin-block: auto; /* centered in the space above the captions */
+}
+
+.about-grid > .hero-name        { grid-area: name; }
+.about-grid > .about-photo-wrap { grid-area: photo; }
+.about-grid > .about-bio        { grid-area: bio; }
+.about-grid > .about-actions    { grid-area: actions; }
+.about-grid > .about-socials    { grid-area: socials; }
+
+/* ---- The name ---- */
+.hero-name {
+  /* font, capitals and letter-spacing come from the h1-h3 rule (Anton) */
+  font-size: var(--fs-hero);
+  line-height: 1;
+  color: var(--hero-name);
+  margin: 0 0 var(--space-md);
+  translate: calc(var(--mx, 0) * -10px) calc(var(--my, 0) * -6px);
+  transition: translate 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* Every letter reacts to the mouse: it hops up and flips to the hover
+   color, then eases back slowly, so moving across the name leaves a wave. */
+.hero-letter {
+  display: inline-block;
+  transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1), color 0.6s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .hero-letter:hover {
+    transform: translateY(-0.08em);
+    color: var(--hero-hover);
+    transition-duration: 0.15s;
+  }
+}
+
+/* The words rise into place one after another once, when the page loads.
+   (Skipped for "reduce motion" — see effects.css.) The last word always
+   gets its own line: "SILVA YUNISA" / "NASUTION". */
+.hero-word {
+  display: inline-block;
+  animation: hero-rise 0.85s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation-delay: calc(var(--i, 0) * 90ms);
+}
+
+.hero-word:last-of-type {
+  display: block;
+}
+
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(0.18em);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Tap / click a letter: every letter hops once, the delay growing with its
+   distance from the one that was tapped (set from About.jsx). */
+.hero-name.is-wave .hero-letter {
+  animation: letter-hop 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@keyframes letter-hop {
+  0%,
+  100% {
+    top: 0;
+    color: var(--hero-name);
+  }
+  35% {
+    top: -0.18em;
+    color: var(--hero-hover);
+  }
+}
+
+/* ---- Bio ----
+   Both paragraphs share one font, size, weight and color, so the text under
+   the name reads as a single block. (The name itself is the only display type.) */
+.about-bio p {
+  max-width: 34em;
+  font-family: var(--font-body);
+  font-size: 1.125rem;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--ink);
+}
+
+.about-bio p + p {
+  margin-top: 0.9rem;
+}
+
+.about-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: var(--space-md);
+}
+
+.about-actions .btn {
+  width: fit-content;
+}
+
+.btn-outline {
+  background: none;
+  color: var(--ink);
+  border-color: var(--ink);
+}
+
+.btn-outline:hover {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--surface);
+}
+
+/* ---- Social icons ---- */
+.about-socials {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: var(--space-md);
+}
+
+.social-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  color: var(--ink);
+  transition: color var(--transition), border-color var(--transition), background var(--transition),
+    translate 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.social-icon svg {
+  width: 19px;
+  height: 19px;
+}
+
+.social-icon:hover,
+.social-icon:focus-visible {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--tint);
+}
+
+/* ---- Portrait: a tilted photo in a white frame ----
+   <Reveal> animates the wrapper; the card inside carries the resting
+   angle and the mouse tilt (--tilt-x / --tilt-y, set by useTilt). */
+.about-photo-wrap {
+  width: 100%;
+  max-width: 380px;
+  justify-self: end;
+  align-self: center;
+  perspective: 900px;
+}
+
+.about-photo-card {
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+  border: 10px solid rgba(255, 255, 255, 0.95);
+  border-radius: 22px;
+  overflow: hidden;
+  background: #fff;
+  transform: rotate(3deg) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+  /* depth: the photo drifts with the mouse while the name drifts the other way */
+  translate: calc(var(--mx, 0) * 14px) calc(var(--my, 0) * 10px);
+  transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1), translate 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+  box-shadow: 0 28px 50px -28px rgba(0, 0, 0, 0.45); /* soft, no hard offset block */
+}
+
+/* Tap / click the photo: a quick wobble (uses the separate `rotate` and
+   `scale` properties, so it stacks on top of the resting tilt). */
+.about-photo-card.is-wobble {
+  animation: photo-wobble 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+@keyframes photo-wobble {
+  0%   { rotate: 0deg;    scale: 1; }
+  25%  { rotate: -6deg;   scale: 0.94; }
+  55%  { rotate: 4deg;    scale: 1.04; }
+  80%  { rotate: -1.5deg; scale: 0.99; }
+  100% { rotate: 0deg;    scale: 1; }
+}
+
+.about-image {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: 50% 12%;
+  background: #fff;
+}
+
+/* ---- Corner captions along the bottom of the hero (desktop) ---- */
+.hero-notes {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-md);
+  margin-top: var(--space-lg);
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--line);
+  font-size: var(--fs-small);
+  color: var(--ink-soft);
+  animation: hero-fade 0.9s ease 0.6s both;
+}
+
+.hero-notes p {
+  max-width: 30em;
+}
+
+.hero-notes p:last-child {
+  text-align: right;
+}
+
+@keyframes hero-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ---- Chips (project tags, modal tags) ---- */
+.tag {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.28rem 0.8rem;
+  font-size: var(--fs-tiny);
+  font-weight: 500;
+  color: var(--ink-soft);
+  background: none;
+}

@@ -1,0 +1,13 @@
+/* All styles, in the order they must load. Later files can override
+   earlier ones on purpose (e.g. responsive.css and effects.css come
+   after the section files), so keep this order. */
+@import './tokens.css';
+@import './base.css';
+@import './navbar.css';
+@import './about.css';
+@import './projects.css';
+@import './skills.css';
+@import './contact.css';
+@import './responsive.css';
+@import './effects.css';
+@import './modal.css';

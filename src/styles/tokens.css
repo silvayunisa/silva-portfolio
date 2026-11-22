@@ -1,0 +1,87 @@
+/* =========================================================
+   DESIGN TOKENS — change these to restyle the whole site
+
+   Colors are named by ROLE, not by hue, because dark mode swaps the
+   values (not the names):
+     --surface      page background
+     --surface-alt  slightly different panels (image backdrops)
+     --tint         light blue wash (row hover, chips)
+     --accent       the blue used for links, categories and highlights
+     --ink          main text color
+     --ink-soft     secondary text (descriptions, notes)
+     --line         thin dividers and outlines
+     --cursor       the pixel cursor and the "View Details" label
+========================================================= */
+:root {
+  /* COLORS — DAY
+     The two brand colors: page = #AEE1F5 (sky blue), cursor = #1F6FA8.
+     Text, lines and hover washes are tuned so body text stays above
+     WCAG AA contrast (4.5:1) on the sky-blue page. */
+  --surface: #AEE1F5;
+  --surface-alt: #C4EAF8;   /* image backdrops, modal panel */
+  --tint: #9AD3EB;          /* hover wash, one step deeper than the page */
+  --accent: #17588A;        /* links, categories (a deeper #1F6FA8 so small text stays readable) */
+  --ink: #0F2B3D;
+  --ink-soft: rgba(15, 43, 61, 0.8);
+  --line: rgba(15, 43, 61, 0.28);
+
+  /* THE CURSOR: the pixel cursor and the "View Details" label that
+     replaces it over a project. */
+  --cursor: #1F6FA8;
+  --cursor-edge: #FFFFFF;   /* 1-pixel outline of the pixel cursor */
+  --cursor-ink: #FFFFFF;    /* text on the "View Details" label */
+
+  /* The big name in the hero */
+  --hero-name: #0E3A5E;
+  --hero-hover: #1F6FA8;
+
+  /* TYPOGRAPHY
+     Display: Anton, a heavy condensed face (headings, the name, project
+     titles). It only exists in one weight, so never add font-weight to it.
+     Body: Inter. Both are bundled with the site (no Google Fonts request). */
+  --font-display: 'Anton', 'Impact', 'Arial Narrow Bold', sans-serif;
+  --font-body: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --fs-hero: clamp(3rem, min(6.6vw, 12vh), 6.25rem); /* also capped by screen height so short laptops still fit the hero */
+  --fs-h2: clamp(2.4rem, 5vw, 4rem);
+  --fs-lead: 1.2rem;
+  --fs-body: 1.0625rem;
+  --fs-small: 0.92rem;
+  --fs-tiny: 0.84rem;
+
+  /* SPACING */
+  --space-sm: 1rem;
+  --space-md: 2rem;
+  --space-lg: 3.5rem;
+  --space-xl: 6rem;
+
+  --section-padding-y: 6rem;
+  --section-padding-x: clamp(1.5rem, 6vw, 4rem);
+  --max-width: 1240px;
+
+  /* SHAPE & MOTION */
+  --radius-sm: 6px;
+  --radius-md: 14px;
+  --transition: 0.25s ease;
+}
+
+/* Dark mode palette — same variable names, new values.
+   Turned on by adding data-theme="dark" to <html>. */
+:root[data-theme="dark"] {
+  /* COLORS — NIGHT
+     Page = #1F6FA8, cursor = #AEE1F5 (the two day colors, swapped). */
+  --surface: #1F6FA8;
+  --surface-alt: #195E96;
+  --tint: #1A629C;          /* hover wash: a touch deeper than the page */
+  --accent: #E3F6FF;        /* a very light blue so links stay readable on #1F6FA8 */
+  --ink: #F4FBFF;
+  --ink-soft: rgba(244, 251, 255, 0.92);
+  --line: rgba(244, 251, 255, 0.34);
+
+  --cursor: #AEE1F5;
+  --cursor-edge: #0F2B3D;
+  --cursor-ink: #0F2B3D;
+
+  --hero-name: #FFFFFF;
+  --hero-hover: #0F2B3D;
+}
