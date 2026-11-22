@@ -1,0 +1,117 @@
+/* =========================================================
+   NAVIGATION
+========================================================= */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+}
+
+.nav-inner {
+  max-width: var(--max-width); /* same width as the page content, so the logo lines up with it */
+  margin: 0 auto;
+  padding: 1.1rem var(--section-padding-x);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+
+.nav-logo {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.35rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.nav-menu {
+  display: flex;
+  gap: var(--space-md);
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.nav-link {
+  position: relative;
+  font-weight: 500;
+  font-size: var(--fs-small);
+  color: var(--ink-soft);
+  padding: 0.25rem 0;
+  transition: color var(--transition);
+}
+
+/* Thin underline that sweeps in from the left on hover/focus, instead of
+   the border just snapping to color — a small, cheap micro-interaction. */
+.nav-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--transition);
+}
+
+.nav-link:hover,
+.nav-link:focus-visible {
+  color: var(--ink);
+}
+
+.nav-link:hover::after,
+.nav-link:focus-visible::after {
+  transform: scaleX(1);
+}
+
+.nav-link:active {
+  color: var(--ink);
+}
+
+.nav-link.active::after {
+  transform: scaleX(1);
+}
+
+/* Hamburger button — mobile only (the 768px rule in responsive.css shows
+   it). It's a real <button>, so it can be reached with Tab and opened with
+   Enter/Space; the resets below make it look like the plain three-line icon. */
+.nav-burger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 26px;
+  height: 18px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.nav-burger span {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background: var(--ink);
+}
+
+/* Dims the page behind the open mobile menu (see .nav-menu below) so
+   the dropdown reads as its own focused layer instead of sitting
+   flush against whatever hero/body text happens to be underneath it.
+   Hidden outside the mobile nav breakpoint. */
+.nav-backdrop {
+  display: none;
+}
+
+:root[data-theme="dark"] .nav-backdrop {
+  background: rgba(0, 0, 0, 0.65);
+}

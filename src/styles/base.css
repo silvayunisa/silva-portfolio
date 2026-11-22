@@ -1,0 +1,120 @@
+/* =========================================================
+   GLOBAL
+========================================================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 72px; /* matches the navbar's real height so scrolling to a section lands flush against it, with no gap showing the previous section's background */
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  color: var(--ink);
+  background: var(--surface);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  /* The About photo's floating badges intentionally poke slightly past
+     their own box — this is a safety net so they can never cause a
+     horizontal scrollbar on narrow screens. */
+  overflow-x: hidden;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  line-height: 1.02;
+  font-weight: 400; /* Anton has a single weight; anything bolder would be faked */
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+
+p {
+  max-width: 62ch; /* keeps body text readable */
+  text-wrap: pretty;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a,
+button {
+  -webkit-tap-highlight-color: transparent; /* we provide our own :active feedback instead */
+}
+
+ul {
+  list-style: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+.section-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: var(--section-padding-y) var(--section-padding-x);
+}
+
+.section-title {
+  /* font, capitals and letter-spacing come from the h1-h3 rule above (Anton) */
+  font-size: var(--fs-h2);
+  color: var(--ink);
+  margin-bottom: var(--space-md);
+}
+
+.btn {
+  display: inline-block;
+  background: var(--ink);
+  color: var(--surface);
+  font-weight: 600;
+  font-size: var(--fs-small);
+  padding: 0.85rem 1.6rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--ink);
+  transition: background var(--transition), color var(--transition),
+    border-color var(--transition), transform 0.12s ease,
+    translate 0.3s cubic-bezier(0.2, 0.7, 0.2, 1); /* translate = the magnetic pull (useMagnetic) */
+}
+
+.btn:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--surface);
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+a:focus-visible,
+.btn:focus-visible,
+.nav-burger:focus-visible,
+.project-view-details:focus-visible,
+.project-modal-close:focus-visible,
+.project-modal-panel:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--ink);
+  color: var(--surface);
+  padding: 0.75rem 1.25rem;
+  z-index: 999;
+}
+
+.skip-link:focus {
+  left: var(--space-sm);
+  top: var(--space-sm);
+}

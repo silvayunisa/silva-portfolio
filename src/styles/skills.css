@@ -1,0 +1,75 @@
+/* =========================================================
+   SKILLS & TOOLS
+   Two flat tag lists: Skills, and Tools & Technologies.
+========================================================= */
+/* Same white as About (--surface), so the two sections read as one
+   consistent light surface instead of Skills standing out as its
+   own dark block. */
+.skills {
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.skills-groups {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.skills-group-title {
+  font-size: 1.2rem; /* Anton, set by the h3 rule in base.css */
+  letter-spacing: 0.05em;
+  color: var(--ink-soft);
+  margin-bottom: var(--space-sm);
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.skills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+/* Outlined chips. On hover they fill with the accent, the arrow kicks
+   out, and (useMagnetic) the chip leans toward the mouse. */
+.skill-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  background: none;
+  color: var(--ink);
+  border: 1px solid var(--ink-soft);
+  border-radius: 999px;
+  padding: 0.6rem 1.15rem;
+  font-weight: 600;
+  font-size: var(--fs-small);
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition),
+    border-color var(--transition), transform var(--transition),
+    translate 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.skill-tag::after {
+  content: '↗';
+  opacity: 0.55;
+  transition: opacity var(--transition), transform var(--transition);
+}
+
+.skill-tag:hover::after,
+.skill-tag:focus-visible::after {
+  opacity: 1;
+  transform: translate(2px, -2px);
+}
+
+.skill-tag:hover,
+.skill-tag:focus-visible {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--surface);
+  transform: translateY(-2px);
+}
+
+.skill-tag:active {
+  transform: translateY(0) scale(0.96);
+}

@@ -1,0 +1,229 @@
+/* =========================================================
+   PROJECTS
+   An index, not a card grid: one row per project, separated by thin
+   lines. Left = what it is (category + name), right = the details.
+   Hovering a row washes it light blue and the "View Details" label
+   follows the cursor; clicking anywhere on the row opens the popup.
+========================================================= */
+.projects {
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+}
+
+.projects-grid {
+  display: block;
+}
+
+.project-card {
+  position: relative;
+  overflow: hidden; /* keeps the cursor label inside the row */
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  column-gap: var(--space-lg);
+  align-items: start;
+  /* The hover wash reaches slightly past the text column, while the text
+     itself stays aligned with the rest of the page. */
+  margin: 0 -1.5rem;
+  padding: var(--space-lg) 1.5rem;
+  border-radius: var(--radius-md);
+}
+
+/* Straight dividers between rows (a border would curve with the rounded corners) */
+.project-card::before,
+.project-card:last-child::after {
+  content: '';
+  position: absolute;
+  left: 1.5rem;
+  right: 1.5rem;
+  height: 1px;
+  background: var(--line);
+}
+
+.project-card::before {
+  top: 0;
+}
+
+.project-card:last-child::after {
+  bottom: 0;
+}
+
+.project-head {
+  grid-column: 1;
+  grid-row: 1;
+  transition: transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* the title steps toward the details when the row is hovered */
+.project-card:hover .project-head,
+.project-card:focus-within .project-head {
+  transform: translateX(14px);
+}
+
+.project-body {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.project-category {
+  font-size: var(--fs-small);
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 0.45rem;
+}
+
+.project-name {
+  font-size: clamp(1.9rem, 3vw, 2.7rem);
+  line-height: 1.04;
+  letter-spacing: 0.01em;
+  max-width: 14em;
+  transition: color var(--transition);
+}
+
+.project-desc {
+  font-size: var(--fs-body);
+  line-height: 1.65;
+  color: var(--ink);
+  margin-bottom: var(--space-sm);
+}
+
+/* Team-project disclosure. The rule on the left marks it as a note
+   about how the project was made, set apart from the description. */
+.project-meta {
+  font-size: var(--fs-small);
+  line-height: 1.55;
+  color: var(--ink-soft);
+  border-left: 2px solid var(--accent);
+  padding-left: 0.85rem;
+  margin-bottom: var(--space-sm);
+}
+
+.project-meta strong {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.project-highlights {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.35rem var(--space-md);
+  margin-bottom: var(--space-sm);
+  font-size: var(--fs-small);
+  color: var(--ink-soft);
+}
+
+.project-highlights li {
+  position: relative;
+  padding-left: 1rem;
+}
+
+.project-highlights li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: var(--space-sm);
+}
+
+.project-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+}
+
+.project-link {
+  font-weight: 600;
+  font-size: var(--fs-small);
+  color: var(--accent);
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 1px;
+  transition: opacity var(--transition);
+}
+
+.project-link:hover {
+  opacity: 0.75;
+}
+
+/* A real screenshot — the only project that has one. Shown whole (never cropped). */
+img.project-image {
+  grid-column: 2;
+  grid-row: 2;
+  width: 100%;
+  height: auto;
+  margin-top: var(--space-md);
+  object-fit: contain;
+  background: var(--surface-alt);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+}
+
+/* ---- "View Details" ----
+   Mouse: a small label that eases toward the cursor inside the row (position
+   is animated in JS — see useCursorFollow). Touch / keyboard: a normal button
+   at the end of the row. */
+.project-view-details {
+  grid-column: 2;
+  justify-self: start;
+  display: flex;
+  align-items: center;
+  margin-top: var(--space-sm);
+  background: var(--cursor);
+  color: var(--cursor-ink);
+  border: 0;
+  border-radius: 999px;
+  padding: 0.6em 1.15em;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: var(--fs-small);
+  cursor: pointer;
+  transition: opacity var(--transition), background-color var(--transition), color var(--transition),
+    transform 0.12s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .project-view-details {
+    /* It is positioned against the whole row (its padding edge). Left on
+       "grid-column: 2" it would use that column as its reference instead and
+       land far to the right of the mouse. */
+    grid-column: auto;
+    grid-row: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-top: 0;
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.85);
+    pointer-events: none;
+    z-index: 5;
+    white-space: nowrap;
+    /* left/top change every frame from JavaScript (already eased there);
+       no CSS transition on them or the two would fight. */
+    transition: opacity 0.18s ease-out, transform 0.18s ease-out, background-color var(--transition),
+      color var(--transition);
+  }
+
+  .project-card:hover .project-view-details {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  /* Tabbing to the button (no mouse): pin it to a predictable corner. */
+  .project-view-details:focus-visible {
+    opacity: 1;
+    top: auto;
+    left: auto;
+    bottom: var(--space-sm);
+    right: var(--space-sm);
+    transform: none;
+  }
+}

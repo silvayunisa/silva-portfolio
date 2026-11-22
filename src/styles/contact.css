@@ -1,0 +1,78 @@
+/* =========================================================
+   CONTACT
+========================================================= */
+.contact {
+  background: var(--surface);
+  color: var(--ink);
+  border-top: 1px solid var(--line); /* the only thing that separates it from Skills now */
+}
+
+.contact-list {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--line);
+}
+
+/* A row is one big link. On hover a tint wipes in from the left and the
+   text steps to the right. */
+.contact-row {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-sm);
+  padding: var(--space-md) 0;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink);
+}
+
+.contact-row::before {
+  content: '';
+  position: absolute;
+  inset: 0 -1.5rem;
+  z-index: -1;
+  background: var(--tint);
+  border-radius: var(--radius-md);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.contact-row > span {
+  transition: transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1), color var(--transition);
+}
+
+.contact-row:hover::before,
+.contact-row:focus-visible::before {
+  transform: scaleX(1);
+}
+
+.contact-row:hover > span,
+.contact-row:focus-visible > span {
+  transform: translateX(10px);
+}
+
+.contact-row:hover .contact-value,
+.contact-row:focus-visible .contact-value {
+  color: var(--accent);
+}
+
+.contact-label {
+  font-size: var(--fs-small);
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+.contact-value {
+  font-size: clamp(1.1rem, 2.2vw, 1.6rem);
+  font-weight: 600;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.footer-note {
+  margin-top: var(--space-lg);
+  font-size: var(--fs-tiny);
+  opacity: 0.8;
+}
